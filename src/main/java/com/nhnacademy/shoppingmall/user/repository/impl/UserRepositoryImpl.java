@@ -40,6 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
                 return Optional.of(user);
             }
         } catch (SQLException e) {
+            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
         return Optional.empty();
@@ -66,6 +67,7 @@ public class UserRepositoryImpl implements UserRepository {
                 return Optional.of(user);
             }
         } catch (SQLException e) {
+            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
         return Optional.empty();
@@ -88,6 +90,7 @@ public class UserRepositoryImpl implements UserRepository {
             pstm.setInt(6, user.getUserPoint());
             return pstm.executeUpdate();
         } catch (SQLException e) {
+            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
     }
@@ -95,7 +98,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int deleteByUserId(String userId) {
         //todo#3-4 회원삭제, executeUpdate()을 반환합니다.
-        if (countByUserId(userId) == 0) throw new IllegalArgumentException("Not exist userId");
+        if (countByUserId(userId) == 0) {
+            DbConnectionThreadLocal.setSqlError(true);
+            throw new IllegalArgumentException("Not exist userId");
+        }
 
         String sql = "DELETE FROM users WHERE user_id=?";
         Connection connection = DbConnectionThreadLocal.getConnection();
@@ -105,6 +111,7 @@ public class UserRepositoryImpl implements UserRepository {
             pstm.setString(1, userId);
             return pstm.executeUpdate();
         } catch (SQLException e) {
+            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
     }
@@ -112,7 +119,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int update(User user) {
         //todo#3-5 회원수정, executeUpdate()을 반환합니다.
-        if (countByUserId(user.getUserId()) == 0) throw new RuntimeException("Not exist user");
+        if (countByUserId(user.getUserId()) == 0) {
+            DbConnectionThreadLocal.setSqlError(true);
+            throw new RuntimeException("Not exist user");
+        }
 
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "UPDATE users SET user_name = ?, user_password =?, user_birth= ?,user_auth=?, user_point=? WHERE user_id = ?";
@@ -127,6 +137,7 @@ public class UserRepositoryImpl implements UserRepository {
             pstm.setString(6, user.getUserId());
             return pstm.executeUpdate();
         } catch (SQLException e) {
+            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
     }
@@ -134,7 +145,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int updateLatestLoginAtByUserId(String userId, LocalDateTime latestLoginAt) {
         //todo#3-6, 마지막 로그인 시간 업데이트, executeUpdate()을 반환합니다.
-        if (countByUserId(userId) == 0) throw new RuntimeException("Not exist user");
+        if (countByUserId(userId) == 0){
+            DbConnectionThreadLocal.setSqlError(true);
+            throw new RuntimeException("Not exist user");
+        }
 
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "UPDATE users SET latest_login_at = ? WHERE user_id = ?";
@@ -145,6 +159,7 @@ public class UserRepositoryImpl implements UserRepository {
             pstm.setString(2, userId);
             return pstm.executeUpdate();
         } catch (SQLException e) {
+            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
     }
@@ -165,6 +180,7 @@ public class UserRepositoryImpl implements UserRepository {
                 return cnt;
             }
         } catch (SQLException e) {
+            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
         return 0;
