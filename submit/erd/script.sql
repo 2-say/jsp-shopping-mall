@@ -1,6 +1,4 @@
-use
-nhn_academy_31;
-
+use nhn_academy_31;
 
 DROP TABLE IF EXISTS `auth`;
 DROP TABLE IF EXISTS `category`;
