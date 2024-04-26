@@ -7,7 +7,7 @@ import org.junit.jupiter.api.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-//todo#2 - connection-pool test
+//todo2 - connection-pool test
 
 @Slf4j
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)

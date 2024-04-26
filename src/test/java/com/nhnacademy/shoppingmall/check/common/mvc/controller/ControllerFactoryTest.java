@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Stream;
 
-//todo#5-6 테스트 코드가 통과하도록 ControllerFactory를 구현합니다.
+//todo5-6 테스트 코드가 통과하도록 ControllerFactory를 구현합니다.
 
 @Slf4j
 class ControllerFactoryTest {

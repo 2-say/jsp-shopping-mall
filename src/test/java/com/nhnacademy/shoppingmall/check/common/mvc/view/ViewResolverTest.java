@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.function.Try;
 import org.junit.platform.commons.util.ReflectionUtils;
 
-//todo#6-5 테스트가 통과하도록 ViewResolver를 구현합니다.
+//todo6-5 테스트가 통과하도록 ViewResolver를 구현합니다.
 class ViewResolverTest {
     final ViewResolver viewResolver = new ViewResolver();
 

@@ -15,7 +15,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUserIdAndUserPassword(String userId, String userPassword) {
-        /*todo#3-1 회원의 아이디와 비밀번호를 이용해서 조회하는 코드 입니다.(로그인)
+        /*todo3-1 회원의 아이디와 비밀번호를 이용해서 조회하는 코드 입니다.(로그인)
           해당 코드는 SQL Injection이 발생합니다. SQL Injection이 발생하지 않도록 수정하세요.
          */
         Connection connection = DbConnectionThreadLocal.getConnection();
@@ -47,7 +47,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findById(String userId) {
-        //todo#3-2 회원조회
+        //todo3-2 회원조회
         String sql = "SELECT * FROM users WHERE user_id=?";
         Connection connection = DbConnectionThreadLocal.getConnection();
         try {
@@ -73,7 +73,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public int save(User user) {
-        //todo#3-3 회원등록, executeUpdate()을 반환합니다.
+        //todo3-3 회원등록, executeUpdate()을 반환합니다.
 
         countByUserId(user.getUserId());
         String sql = "INSERT INTO users (user_id, user_name, user_password, user_birth, user_auth, user_point, created_at, latest_login_at) VALUES(?, ?, ?, ? , ?, ?, ?, ?)";
@@ -102,7 +102,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public int deleteByUserId(String userId) {
-        //todo#3-4 회원삭제, executeUpdate()을 반환합니다.
+        //todo3-4 회원삭제, executeUpdate()을 반환합니다.
         if (countByUserId(userId) == 0) {
             DbConnectionThreadLocal.setSqlError(true);
             throw new IllegalArgumentException("Not exist userId");
@@ -122,7 +122,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public int update(User user) {
-        //todo#3-5 회원수정, executeUpdate()을 반환합니다.
+        //todo3-5 회원수정, executeUpdate()을 반환합니다.
         if (countByUserId(user.getUserId()) == 0) {
             throw new RuntimeException("Not exist user");
         }
@@ -146,7 +146,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public int updateLatestLoginAtByUserId(String userId, LocalDateTime latestLoginAt) {
-        //todo#3-6, 마지막 로그인 시간 업데이트, executeUpdate()을 반환합니다.
+        //todo3-6, 마지막 로그인 시간 업데이트, executeUpdate()을 반환합니다.
         if (countByUserId(userId) == 0) {
             DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException("Not exist user");
@@ -167,7 +167,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public int countByUserId(String userId) {
-        //todo#3-7 userId와 일치하는 회원의 count를 반환합니다.
+        //todo3-7 userId와 일치하는 회원의 count를 반환합니다.
         String sql = "SELECT EXISTS(SELECT 1 FROM users WHERE user_id =?) as cnt";
         Connection connection = DbConnectionThreadLocal.getConnection();
 

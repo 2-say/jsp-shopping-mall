@@ -12,7 +12,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-//todo#3-8 Test Code가 통과하도록 UserRepositoryImpl를 구현합니다.
+//todo3-8 Test Code가 통과하도록 UserRepositoryImpl를 구현합니다.
 
 @Slf4j
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)

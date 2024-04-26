@@ -18,14 +18,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String userId) {
-        //todo#4-1 회원조회
+        //todo4-1 회원조회
         Optional<User> userOptional = userRepository.findById(userId);
         return userOptional.orElse(null);
     }
 
     @Override
     public void saveUser(User user) {
-        //todo#4-2 회원등록
+        //todo4-2 회원등록
         if (userRepository.countByUserId(user.getUserId()) == 0)
             userRepository.save(user);
         else throw new UserAlreadyExistsException(user.getUserId());
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        //todo#4-3 회원수정
+        //todo4-3 회원수정
         if (userRepository.countByUserId(user.getUserId()) == 0) {
             throw new UserNotFoundException(user.getUserId());
         }
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String userId) {
-        //todo#4-4 회원삭제
+        //todo4-4 회원삭제
         if (userRepository.countByUserId(userId) == 0) {
             throw new UserNotFoundException(userId);
         }
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User doLogin(String userId, String userPassword) {
-        //todo#4-5 로그인 구현, userId, userPassword로 일치하는 회원 조회
+        //todo4-5 로그인 구현, userId, userPassword로 일치하는 회원 조회
         Optional<User> userOptional = userRepository.findByUserIdAndUserPassword(userId, userPassword);
         if (userOptional.isEmpty()) {
             throw new UserNotFoundException(userId);

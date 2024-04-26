@@ -23,9 +23,9 @@ public class DbUtils {
             throw new RuntimeException(e);
         }
 
-        //todo#1-1 {ip},{database},{username},{password} 설정
-        //todo#1-2 initialSize, maxTotal, maxIdle, minIdle 은 모두 5로 설정합니다.
-        //todo#1-3 Validation Query를 설정하세요
+        //todo1-1 {ip},{database},{username},{password} 설정
+        //todo1-2 initialSize, maxTotal, maxIdle, minIdle 은 모두 5로 설정합니다.
+        //todo1-3 Validation Query를 설정하세요
         basicDataSource.setUrl("jdbc:mysql://133.186.241.167:3306/nhn_academy_31");
         basicDataSource.setUsername("nhn_academy_31");
         basicDataSource.setPassword("3u.SF)xeXWIfzB[Y");
@@ -37,7 +37,7 @@ public class DbUtils {
         basicDataSource.setValidationQuery("select 1");
         basicDataSource.setMaxWait(Duration.ofSeconds(2));
 
-        //todo#1-4 적절히 변경하세요
+        //todo1-4 적절히 변경하세요
         DATASOURCE = basicDataSource;
     }
 

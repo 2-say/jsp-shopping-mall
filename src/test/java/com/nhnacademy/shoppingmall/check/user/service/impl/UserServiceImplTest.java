@@ -20,7 +20,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
-//todo#4-6 Test Code가 통과하도록 UserServiceImpl을 구현합니다.
+//todo4-6 Test Code가 통과하도록 UserServiceImpl을 구현합니다.
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
