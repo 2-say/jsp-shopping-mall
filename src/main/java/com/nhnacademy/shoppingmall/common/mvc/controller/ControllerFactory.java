@@ -1,9 +1,12 @@
 package com.nhnacademy.shoppingmall.common.mvc.controller;
 
+import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
+import com.nhnacademy.shoppingmall.common.mvc.exception.ControllerNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +23,27 @@ public class ControllerFactory {
             return;
         }
 
+        for (Class<?> aClass : c) {
+            try {
+                Object instance = aClass.getDeclaredConstructor().newInstance();
+                String[] servletPath = aClass.getAnnotation(RequestMapping.class).value();
+                String method = aClass.getAnnotation(RequestMapping.class).method().name();
+
+                for (String s : servletPath) {
+                    log.info("[ControllerFactory] input = {}",method.toUpperCase() + "-"+ s);
+                    beanMap.put(method.toUpperCase() + "-" + s, instance);
+                }
+            } catch (InstantiationException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         /*todo#5-1 ControllerFactory 초기화, 아래 설명을 참고하여 구현합니다.
          * 1. Set<Class<?>> c 에는 com.nhnacademy.shoppingmall.common.initialize.WebAppInitializer 에서  HandlesTypes에
          * com.nhnacademy.shoppingmall.common.mvc.controller.BaseController.class인 class를 set에 담겨서 parameter로 전달 됩니다.
@@ -34,32 +58,37 @@ public class ControllerFactory {
 
 
         //#todo5-2 ctx(ServletContext)에  attribute를 추가합니다. -> key : CONTEXT_CONTROLLER_FACTORY_NAME, value : ControllerFactory
-
+        ctx.setAttribute(CONTEXT_CONTROLLER_FACTORY_NAME, this);
     }
 
     private Object getBean(String key){
+        notExistController(key);
         //todo#5-3 beanMap에서 controller 객체를 반환 합니다.
-
-        return null;
+        log.info("[getBean] {}", key);
+        return beanMap.get(key);
     }
 
     public Object getController(HttpServletRequest request){
+        notExistController(request.getMethod().toUpperCase() + "-" + request.getServletPath());
         //todo#5-4 request의 method, servletPath를 이용해서 Controller 객체를 반환합니다.
-
-        return null;
+        return beanMap.get(request.getMethod().toUpperCase() + "-" + request.getServletPath());
     }
 
     public Object getController(String method, String path){
+        notExistController(method.toUpperCase() + "-" + path);
         //todo#5-5 method, path를 이용해서 Controller 객체를 반환 합니다.
-
-        return null;
+        return beanMap.get(method.toUpperCase() + "-" + path);
     }
 
     private String getKey(String method, String path){
         //todo#5-6  {method}-{key}  형식으로 Key를 반환 합니다.
         //ex GET-/index.do
         //ex POST-/loginAction.do
+        return method.toUpperCase() + "-" + path;
+    }
 
-        return "";
+    private void notExistController(String key) {
+        if(!beanMap.containsKey(key))
+            throw new ControllerNotFoundException("Not found controller");
     }
 }
