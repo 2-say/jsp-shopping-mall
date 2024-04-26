@@ -40,7 +40,6 @@ public class UserRepositoryImpl implements UserRepository {
                 return Optional.of(user);
             }
         } catch (SQLException e) {
-            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
         return Optional.empty();
@@ -67,7 +66,6 @@ public class UserRepositoryImpl implements UserRepository {
                 return Optional.of(user);
             }
         } catch (SQLException e) {
-            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
         return Optional.empty();
@@ -76,9 +74,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int save(User user) {
         //todo#3-3 회원등록, executeUpdate()을 반환합니다.
-//        if (countByUserId(user.getUserId()) == 1) throw new RuntimeException("Exist user");
 
-        String sql = "INSERT INTO users (user_id, user_name, user_password, user_birth, user_auth, user_point, created_at) VALUES(?, ?, ?, ? , ? , ?, NOW())";
+        countByUserId(user.getUserId());
+        String sql = "INSERT INTO users (user_id, user_name, user_password, user_birth, user_auth, user_point, created_at, latest_login_at) VALUES(?, ?, ?, ? , ?, ?, ?, ?)";
         Connection connection = DbConnectionThreadLocal.getConnection();
         try {
             PreparedStatement pstm = connection.prepareStatement(sql);
@@ -88,11 +86,18 @@ public class UserRepositoryImpl implements UserRepository {
             pstm.setString(4, user.getUserBirth());
             pstm.setString(5, user.getUserAuth().name());
             pstm.setInt(6, user.getUserPoint());
+            pstm.setString(7, user.getCreatedAt().toString());
+
+            if(user.getLatestLoginAt() == null)
+                pstm.setString(8,null);
+            else
+                pstm.setString(8, user.getLatestLoginAt().toString());
+
             return pstm.executeUpdate();
         } catch (SQLException e) {
-            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -111,7 +116,6 @@ public class UserRepositoryImpl implements UserRepository {
             pstm.setString(1, userId);
             return pstm.executeUpdate();
         } catch (SQLException e) {
-            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
     }
@@ -120,7 +124,6 @@ public class UserRepositoryImpl implements UserRepository {
     public int update(User user) {
         //todo#3-5 회원수정, executeUpdate()을 반환합니다.
         if (countByUserId(user.getUserId()) == 0) {
-            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException("Not exist user");
         }
 
@@ -137,7 +140,6 @@ public class UserRepositoryImpl implements UserRepository {
             pstm.setString(6, user.getUserId());
             return pstm.executeUpdate();
         } catch (SQLException e) {
-            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
     }
@@ -145,7 +147,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int updateLatestLoginAtByUserId(String userId, LocalDateTime latestLoginAt) {
         //todo#3-6, 마지막 로그인 시간 업데이트, executeUpdate()을 반환합니다.
-        if (countByUserId(userId) == 0){
+        if (countByUserId(userId) == 0) {
             DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException("Not exist user");
         }
@@ -159,7 +161,6 @@ public class UserRepositoryImpl implements UserRepository {
             pstm.setString(2, userId);
             return pstm.executeUpdate();
         } catch (SQLException e) {
-            DbConnectionThreadLocal.setSqlError(true);
             throw new RuntimeException(e);
         }
     }
