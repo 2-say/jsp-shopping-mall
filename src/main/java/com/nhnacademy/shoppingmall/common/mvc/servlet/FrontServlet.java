@@ -29,6 +29,7 @@ public class FrontServlet extends HttpServlet {
         //todo7-1 controllerFactory를 초기화 합니다.
         controllerFactory = (ControllerFactory) getServletContext().getAttribute("CONTEXT_CONTROLLER_FACTORY");
 
+
         //todo7-2 viewResolver를 초기화 합니다.
         viewResolver = new ViewResolver();
     }
