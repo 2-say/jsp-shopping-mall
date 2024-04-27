@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.common.filter;
 
+import com.nhnacademy.shoppingmall.common.util.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
@@ -16,15 +17,13 @@ import java.io.IOException;
 public class LoginCheckFilter extends HttpFilter {
 
     private static final String[] list = {"/mypage/"};
-    public static final String LOGIN_USER = "user";
-
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         //todo10 /mypage/ 하위경로의 접근은 로그인한 사용자만 접근할 수 있습니다.
         if (isLoginCheckPath(req.getRequestURI())) {
             HttpSession session = req.getSession(false);
-            if (session == null || session.getAttribute(LOGIN_USER) == null) {
+            if (session == null || session.getAttribute(SessionConst.LOGIN_USER_ID) == null) {
                 res.sendRedirect("/login.do");
                 return;
             }
