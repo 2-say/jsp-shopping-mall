@@ -12,7 +12,7 @@ import java.io.IOException;
 
 
 @Slf4j
-//@WebFilter(urlPatterns = "/*")
+@WebFilter(urlPatterns = "/*")
 public class LoginCheckFilter extends HttpFilter {
 
     private static final String[] list = {"/mypage/"};

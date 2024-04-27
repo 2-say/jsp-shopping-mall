@@ -33,4 +33,14 @@ public class ApplicationListener implements ServletContextListener {
 
         DbConnectionThreadLocal.reset();
     }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        DbConnectionThreadLocal.initialize();
+
+        userService.deleteUser("admin");
+        userService.deleteUser("user");
+
+        DbConnectionThreadLocal.reset();
+    }
 }
