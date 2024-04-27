@@ -14,7 +14,7 @@ public class LoginController implements BaseController {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        //todo#13-1 session이 존재하고 로그인이 되어 있다면 redirect:/index.do 반환 합니다.
+        //todo13-1 session이 존재하고 로그인이 되어 있다면 redirect:/index.do 반환 합니다.
         try {
             HttpSession session = req.getSession();
             if (session.getAttribute(SessionConst.LOGIN_USER_ID) != null) {
