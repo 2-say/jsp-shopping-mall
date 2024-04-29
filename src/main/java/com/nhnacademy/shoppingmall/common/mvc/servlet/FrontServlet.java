@@ -47,12 +47,12 @@ public class FrontServlet extends HttpServlet {
 
             if(viewResolver.isRedirect(viewName)){
                 String redirectUrl = viewResolver.getRedirectUrl(viewName);
-                log.debug("redirectUrl:{}",redirectUrl);
+                log.info("redirectUrl:{}",redirectUrl);
                 //todo7-6 redirect: 로 시작하면  해당 url로 redirect 합니다.
                 resp.sendRedirect(redirectUrl);
             }else {
                 String layout = viewResolver.getLayOut(viewName);
-                log.debug("viewName:{}", viewResolver.getPath(viewName));
+                log.info("viewName:{}", viewResolver.getPath(viewName));
 
                 if(viewResolver.getPath(viewName).endsWith(".jsp")){
                     initCategory(req);

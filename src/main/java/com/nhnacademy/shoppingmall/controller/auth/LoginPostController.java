@@ -29,16 +29,19 @@ public class LoginPostController implements BaseController {
         String password = req.getParameter("user_password");
 
         User user = userService.doLogin(name, password);
+        HttpSession session = req.getSession();
 
         if (user == null) {
             log.debug("login Failed checking username, password");
-//            DbConnectionThreadLocal.setSqlError(true);
+            session.setAttribute(SessionConst.LOGIN_USER_ID, null);
             throw new UserNotFoundException("login Failed checking username, password");
         }
 
-        HttpSession session = req.getSession();
         session.setAttribute(SessionConst.LOGIN_USER_ID, name);
         session.setMaxInactiveInterval(SESSION_KEEP_MAX_MINUTE * 60);
-        return "shop/main/index";
+
+        log.info("session name = {} ", name);
+
+        return "redirect:/index.do";
     }
 }
