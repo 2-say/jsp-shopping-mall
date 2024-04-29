@@ -27,19 +27,21 @@ public class LoginPostController implements BaseController {
 
         String name = req.getParameter("user_id");
         String password = req.getParameter("user_password");
-
-        User user = userService.doLogin(name, password);
         HttpSession session = req.getSession();
 
-        if (user == null) {
-            log.debug("login Failed checking username, password");
+        try {
+            User user = userService.doLogin(name, password);
+
+        } catch (UserNotFoundException e) {
+            log.info("login Failed checking username, password");
             session.setAttribute(SessionConst.LOGIN_USER_ID, null);
-            throw new UserNotFoundException("login Failed checking username, password");
+            String message = "로그인 실패 아이디와 비밀번호를 확인해주세요!";
+            req.setAttribute("error", message);
+            return "shop/login/login_form";
         }
 
         session.setAttribute(SessionConst.LOGIN_USER_ID, name);
         session.setMaxInactiveInterval(SESSION_KEEP_MAX_MINUTE * 60);
-
         log.info("session name = {} ", name);
 
         return "redirect:/index.do";
