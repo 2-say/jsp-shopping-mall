@@ -53,7 +53,7 @@ CREATE TABLE `address`
 -- 상품
 CREATE TABLE `product`
 (
-    `product_id`          int          NOT NULL COMMENT '상품아이디',
+    `product_id`          int          NOT NULL AUTO_INCREMENT COMMENT '상품아이디',
     `product_name`        varchar(128) NOT NULL COMMENT '상품이름',
     `product_price`       varchar(128) NOT NULL COMMENT '상품가격',
     `product_description` varchar(256) COMMENT '상품설명',
