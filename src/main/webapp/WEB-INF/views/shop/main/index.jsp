@@ -31,7 +31,7 @@
 <br>
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <c:forEach var="item" items="${page.getContent()}" varStatus="status">
+    <c:forEach var="item" items="${pageItem.getContent()}" varStatus="status" begin="0" end="11">
         <div class="col">
             <div class="card shadow-sm">
                 <img src="${item.getFilePath()}${item.getFileName()}" height="300px">
@@ -54,16 +54,26 @@
 
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-            <a class="page-link">Previous</a>
-        </li>
 
         <c:choose>
-            <c:when test="${page.getTotalCount() % 16 == 0}">
-                <c:set var="pageCount" value="${page.getTotalCount() / 16}"/>
+            <c:when test="${page eq '0'}">
+                <li class="page-item disabled">
+                    <a class="page-link" href="index.do?page=${page-1}">Previous</a>
+                </li>
+            </c:when>
+
+            <c:otherwise>
+                <li class="page-item" >
+                    <a class="page-link" href="index.do?page=${page-1}">Previous</a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+        <c:choose>
+            <c:when test="${pageItem.getTotalCount() % 16 == 0}">
+                <c:set var="pageCount" value="${pageItem.getTotalCount() / 16}"/>
             </c:when>
             <c:otherwise>
-                <c:set var="pageCount" value="${page.getTotalCount() / 16 + 1}"/>
+                <c:set var="pageCount" value="${pageItem.getTotalCount() / 16 + 1}"/>
             </c:otherwise>
         </c:choose>
 
@@ -72,7 +82,7 @@
         </c:forEach>
 
         <li class="page-item">
-            <a class="page-link" href="#">Next</a>
+            <a class="page-link" href="index.do?page=${page+1}">Next</a>
         </li>
     </ul>
 </nav>

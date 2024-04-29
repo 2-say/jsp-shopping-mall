@@ -15,9 +15,23 @@ public class IndexController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         ProductDao productDao = new ProductDao();
-        ArrayList<Product> products = productDao.list();
-        Page<Product> page = new Page<>(products, products.size());
+        Page<Product> pageItem;
+        int page = req.getParameter("page") != null ? Integer.parseInt(req.getParameter("page")) : 0;
+
+        String category = req.getParameter("category");
+        ArrayList<Product> products;
+
+        if (category != null) {
+            products = productDao.listCategory(category, page, 12);
+        } else {
+            products = productDao.list(page, 12);
+        }
+
+        pageItem = new Page<>(products, products.size());
+
         req.setAttribute("page", page);
+        req.setAttribute("pageItem", pageItem);
+
         return "shop/main/index";
     }
 }
