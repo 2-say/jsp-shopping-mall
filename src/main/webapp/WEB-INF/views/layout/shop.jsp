@@ -15,7 +15,6 @@
 
 </head>
 <body>
-
     <div class="mainContainer">
         <header class="p-3 bg-dark text-white">
             <div class="container">
@@ -36,6 +35,7 @@
 
                     <div class="text-end">
                         <a class="btn btn-outline-light me-2" href="/login.do" >로그인</a>
+                        <a class="btn btn-outline-light me-2" href="/logout.do" >로그아웃</a>
                         <a class="btn btn-warning" href="signup.do" >회원가입</a>
                     </div>
                 </div>
