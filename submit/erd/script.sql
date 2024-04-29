@@ -16,7 +16,7 @@ CREATE TABLE `category`
 (
     `category_id`       int          NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리아아디',
     `category_name`     varchar(128) NOT NULL COMMENT '카테고리이름',
-    `child_category_id` int NULL COMMENT '자식카테고리아이디',
+    `parent_category_id` int NULL COMMENT '자식카테고리아이디',
     FOREIGN KEY (`child_category_id`) REFERENCES `category` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='카테고리';
 
