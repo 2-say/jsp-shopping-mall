@@ -1,4 +1,5 @@
-use nhn_academy_31;
+use
+nhn_academy_31;
 
 DROP TABLE IF EXISTS `auth`;
 DROP TABLE IF EXISTS `category`;
@@ -59,6 +60,8 @@ CREATE TABLE `product`
     `product_field`       int      DEFAULT 0 COMMENT '상품재고',
     `product_rdate`       datetime DEFAULT NOW() COMMENT '상품등록일',
     `category_id`         int          NOT NULL COMMENT '카테고리아이디',
+    `image_name`          varchar(256) NULL COMMENT '상품이미지이름',
+    `image_path`          varchar(512) NULL COMMENT '상품이미지경로',
     PRIMARY KEY (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='상품';
 
