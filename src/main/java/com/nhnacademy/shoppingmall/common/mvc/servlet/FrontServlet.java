@@ -1,5 +1,7 @@
 package com.nhnacademy.shoppingmall.common.mvc.servlet;
 
+import com.nhnacademy.shoppingmall.category.Categories;
+import com.nhnacademy.shoppingmall.category.CategorysDao;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.common.mvc.view.ViewResolver;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
@@ -8,6 +10,7 @@ import com.nhnacademy.shoppingmall.common.mvc.controller.ControllerFactory;
 import com.nhnacademy.shoppingmall.common.util.DbUtils;
 import lombok.extern.slf4j.Slf4j;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 
 import static javax.servlet.RequestDispatcher.*;
 
@@ -28,8 +32,6 @@ public class FrontServlet extends HttpServlet {
     public void init() throws ServletException {
         //todo7-1 controllerFactory를 초기화 합니다.
         controllerFactory = (ControllerFactory) getServletContext().getAttribute("CONTEXT_CONTROLLER_FACTORY");
-
-
         //todo7-2 viewResolver를 초기화 합니다.
         viewResolver = new ViewResolver();
     }
@@ -51,6 +53,11 @@ public class FrontServlet extends HttpServlet {
             }else {
                 String layout = viewResolver.getLayOut(viewName);
                 log.debug("viewName:{}", viewResolver.getPath(viewName));
+
+                if(viewResolver.getPath(viewName).endsWith(".jsp")){
+                    initCategory(req);
+                }
+
                 req.setAttribute(ViewResolver.LAYOUT_CONTENT_HOLDER, viewResolver.getPath(viewName));
                 RequestDispatcher rd = req.getRequestDispatcher(layout);
                 rd.include(req, resp);
@@ -59,7 +66,6 @@ public class FrontServlet extends HttpServlet {
             log.error("error:{}",e);
             DbConnectionThreadLocal.setSqlError(true);
             //todo7-5 예외가 발생하면 해당 예외에 대해서 적절한 처리를 합니다.
-
             //todo 에러마다 상세 기능 추가 필요
             req.setAttribute("status_code", req.getAttribute(ERROR_STATUS_CODE));
             req.setAttribute("exception_type", req.getAttribute(ERROR_EXCEPTION_TYPE));
@@ -73,6 +79,12 @@ public class FrontServlet extends HttpServlet {
             //todo7-4 connection을 반납합니다.
             DbConnectionThreadLocal.reset();
         }
+    }
+
+    public void initCategory(HttpServletRequest req) {
+        CategorysDao categorysDao = new CategorysDao();
+        List<Categories> categorys = categorysDao.selectCategory();
+        req.setAttribute("categories", categorys);
     }
 
 }
