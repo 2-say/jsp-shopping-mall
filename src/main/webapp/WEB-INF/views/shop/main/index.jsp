@@ -75,7 +75,7 @@
             </c:otherwise>
         </c:choose>
         <c:forEach var="i" begin="1" end="${pageCount + 1}" step="1">
-            <li class="page-item"><a class="page-link" href="index.do?page=${i}">${i}</a></li>
+            <li class="page-item"><a class="page-link <c:if test="${page eq i}">bg-info</c:if> " href="index.do?page=${i}">${i}</a></li>
         </c:forEach>
 
         <c:choose>
