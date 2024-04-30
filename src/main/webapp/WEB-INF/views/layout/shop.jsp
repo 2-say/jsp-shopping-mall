@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<c:set var="userID" value="${user_ID}"/>
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -61,7 +63,11 @@
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/index.do" class="nav-link px-2 text-secondary">Home</a></li>
+
+                    <c:if test="${not empty userID}">
                     <li><a href="/mypage.do" class="nav-link px-2 text-white">마이페이지</a></li>
+                    </c:if>
+
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -71,7 +77,7 @@
 
                 <div class="text-end">
 
-                    <c:set var="userID" value="${user_ID}"/>
+
 
                     <c:choose>
                         <c:when test="${not empty userID}">

@@ -9,7 +9,6 @@
     };
 </script>
 
-
 <div style="margin: auto; width: 400px;">
     <div class="p-2">
         <form method="post" action="/loginAction.do">
