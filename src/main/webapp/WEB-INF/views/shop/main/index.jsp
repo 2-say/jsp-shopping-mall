@@ -34,15 +34,15 @@
     <c:forEach var="item" items="${pageItem.getContent()}" varStatus="status" begin="0" end="11">
         <div class="col">
             <div class="card shadow-sm">
-                <img src="${item.getFilePath()}${item.getFileName()}" height="300px">
+                <img src="${item.getFilePath()}${item.getFileName()}" height="300px" onerror="this.onerror=null; this.src='/resources/no-image.png';">
                 <div class="card-body">
-                    <p class="card-text">${item.getDescription()}</p>
+                    <p class="card-text">${item.getName()}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
                         </div>
-                        <small class="text-muted">9 mins</small>
+                        <small class="text-muted">${item.getPrice()}원</small>
                     </div>
                 </div>
             </div>
