@@ -54,34 +54,38 @@
 
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-
         <c:choose>
-            <c:when test="${page eq '0'}">
+            <c:when test="${page eq '1'}">
                 <li class="page-item disabled">
                     <a class="page-link" href="index.do?page=${page-1}">Previous</a>
                 </li>
             </c:when>
-
             <c:otherwise>
-                <li class="page-item" >
+                <li class="page-item">
                     <a class="page-link" href="index.do?page=${page-1}">Previous</a>
                 </li>
             </c:otherwise>
         </c:choose>
         <c:choose>
-            <c:when test="${pageItem.getTotalCount() % 16 == 0}">
-                <c:set var="pageCount" value="${pageItem.getTotalCount() / 16}"/>
+            <c:when test="${pageItem.getTotalCount() % 12 == 0}">
+                <c:set var="pageCount" value="${pageItem.getTotalCount() / 12}"/>
             </c:when>
             <c:otherwise>
-                <c:set var="pageCount" value="${pageItem.getTotalCount() / 16 + 1}"/>
+                <c:set var="pageCount" value="${pageItem.getTotalCount() / 12 + 1}"/>
             </c:otherwise>
         </c:choose>
-
-        <c:forEach var="i" begin="1" end="${pageCount}" step="1">
-            <li class="page-item"><a class="page-link" href="#">${i}</a></li>
+        <c:forEach var="i" begin="1" end="${pageCount + 1}" step="1">
+            <li class="page-item"><a class="page-link" href="index.do?page=${i}">${i}</a></li>
         </c:forEach>
 
+        <c:choose>
+        <c:when test="${pageItem.getContent().size() lt 12}">
+        <li class="page-item disabled">
+            </c:when>
+            <c:otherwise>
         <li class="page-item">
+            </c:otherwise>
+            </c:choose>
             <a class="page-link" href="index.do?page=${page+1}">Next</a>
         </li>
     </ul>
