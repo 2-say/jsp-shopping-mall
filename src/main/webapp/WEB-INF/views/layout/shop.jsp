@@ -16,6 +16,36 @@
             crossorigin="anonymous"></script>
     <title>nhn아카데미 shopping mall</title>
 
+    <style>
+        /* Add your custom styles here */
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        .card-title {
+            font-size: 24px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+
 </head>
 <body>
 <div class="mainContainer">
@@ -31,7 +61,7 @@
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/index.do" class="nav-link px-2 text-secondary">Home</a></li>
-                    <li><a href="#" class="nav-link px-2 text-white">마이페이지</a></li>
+                    <li><a href="/mypage.do" class="nav-link px-2 text-white">마이페이지</a></li>
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -75,8 +105,8 @@
             <p class="mb-1">shoppingmall example is © nhnacademy.com</p>
         </div>
     </footer>
-
 </div>
+
 
 </body>
 </html>
