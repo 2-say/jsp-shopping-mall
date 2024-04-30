@@ -1,5 +1,9 @@
 package com.nhnacademy.shoppingmall.user.domain;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -7,11 +11,22 @@ public class User {
     public enum Auth{
         ROLE_ADMIN,ROLE_USER
     }
-
+    @NotNull
+    @NotBlank
+    @Min(value = 3, message = "최소 3자 이상 작성해주세요.")
     private String userId;
+    @NotNull
+    @NotBlank
+    @Min(3)
     private String userName;
+    @NotNull
+    @NotBlank
+    @Min(3)
     private String userPassword;
+    @NotNull
+    @NotBlank
     private String userBirth;
+
     private Auth userAuth;
     private int userPoint;
     private LocalDateTime createdAt;
