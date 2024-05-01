@@ -55,7 +55,7 @@ CREATE TABLE `product`
 (
     `product_id`          int          NOT NULL AUTO_INCREMENT COMMENT '상품아이디',
     `product_name`        varchar(128) NOT NULL COMMENT '상품이름',
-    `product_price`       varchar(128) NOT NULL COMMENT '상품가격',
+    `product_price`       bigint NOT NULL DEFAULT 999999999 COMMENT '상품가격',
     `product_description` varchar(256) COMMENT '상품설명',
     `product_field`       int      DEFAULT 0 COMMENT '상품재고',
     `product_rdate`       datetime DEFAULT NOW() COMMENT '상품등록일',

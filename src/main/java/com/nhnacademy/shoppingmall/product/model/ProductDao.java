@@ -31,16 +31,17 @@ public class ProductDao {
             while (rs.next()) {
                 String productId = rs.getString("product_id");
                 String productName = rs.getString("product_name");
-                String productPrice = rs.getString("product_price");
+                int productPrice = rs.getInt("product_price");
                 String productDescription = rs.getString("product_description");
                 int productField = rs.getInt("product_field");
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime rdate = LocalDateTime.parse(rs.getString("product_rdate"), formatter);
 
-                String category = rs.getString("category_id");
+                int category = rs.getInt("category_id");
                 String imageName = rs.getString("image_name");
                 String imagePath = rs.getString("image_path");
+
                 Product product = new Product(productId, productName, productPrice, productDescription, productField, rdate, category, imageName, imagePath);
                 list.add(product);
             }
@@ -79,14 +80,14 @@ public class ProductDao {
             while (rs.next()) {
                 String productId = rs.getString("product_id");
                 String productName = rs.getString("product_name");
-                String productPrice = rs.getString("product_price");
+                int productPrice = rs.getInt("product_price");
                 String productDescription = rs.getString("product_description");
                 int productField = rs.getInt("product_field");
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime rdate = LocalDateTime.parse(rs.getString("product_rdate"), formatter);
 
-                String category = rs.getString("category_id");
+                int category = rs.getInt("category_id");
                 String imageName = rs.getString("image_name");
                 String imagePath = rs.getString("image_path");
                 Product product = new Product(productId, productName, productPrice, productDescription, productField, rdate, category, imageName, imagePath);
