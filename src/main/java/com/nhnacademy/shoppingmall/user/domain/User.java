@@ -3,21 +3,23 @@ package com.nhnacademy.shoppingmall.user.domain;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class User {
-    public enum Auth{
-        ROLE_ADMIN,ROLE_USER
+    public enum Auth {
+        ROLE_ADMIN, ROLE_USER
     }
+
     @NotNull
     @NotBlank
-    @Min(value = 3, message = "최소 3자 이상 작성해주세요.")
+    @Size(min = 3, max = 20, message = "id는 3~20자로 입력해주세요.")
     private String userId;
     @NotNull
     @NotBlank
-    @Min(3)
+    @Size(min = 3, max = 20, message = "이름는 3~20자로 입력해주세요.")
     private String userName;
     @NotNull
     @NotBlank
@@ -32,7 +34,7 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime latestLoginAt;
 
-    public User (String userId, String userName, String userPassword, String userBirth, Auth userAuth, int userPoint, LocalDateTime createdAt, LocalDateTime latestLoginAt ){
+    public User(String userId, String userName, String userPassword, String userBirth, Auth userAuth, int userPoint, LocalDateTime createdAt, LocalDateTime latestLoginAt) {
         this.userId = userId;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -40,7 +42,7 @@ public class User {
         this.userAuth = userAuth;
         this.userPoint = userPoint;
         this.createdAt = createdAt;
-        this.latestLoginAt=latestLoginAt;
+        this.latestLoginAt = latestLoginAt;
     }
 
     public String getUserId() {

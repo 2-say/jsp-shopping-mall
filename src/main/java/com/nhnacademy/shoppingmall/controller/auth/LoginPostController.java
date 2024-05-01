@@ -24,7 +24,6 @@ public class LoginPostController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         //todo13-2 로그인 구현, session은 60분동안 유지됩니다.
-
         String name = req.getParameter("user_id");
         String password = req.getParameter("user_password");
         HttpSession session = req.getSession();
