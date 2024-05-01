@@ -13,7 +13,7 @@ public class CategorysDao {
 
     public List<Categories> selectCategory() {
 
-        String sql = "SELECT c1.category_name AS parent_name, c2.category_name AS child_name FROM category c1 LEFT JOIN category c2 ON c1.category_id = c2.parent_category_id\n" +
+        String sql = "SELECT c2.category_id, c1.category_name AS parent_name, c2.category_name AS child_name FROM category c1 LEFT JOIN category c2 ON c1.category_id = c2.parent_category_id\n" +
                 "WHERE c2.category_name is not null\n" +
                 "ORDER BY c1.category_id, c2.category_id";
 
@@ -30,15 +30,16 @@ public class CategorysDao {
             while (rs.next()) {
                 String parentName = rs.getString("parent_name");
                 String childName = rs.getString("child_name");
+                int categoryId = rs.getInt("category_id");
                 if (currentParent == null) currentParent = parentName;
 
                 if (currentParent.equals(parentName)) {
-                    childList.add(new Category(childName));
+                    childList.add(new Category(categoryId,childName));
                 } else {
                     result.add(new Categories(childList, parentName));
                     currentParent = parentName;
                     childList = new ArrayList<>();
-                    childList.add(new Category(childName));
+                    childList.add(new Category(categoryId,childName));
                 }
             }
             rs.close();
