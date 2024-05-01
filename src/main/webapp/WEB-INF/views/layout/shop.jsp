@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:set var="userID" value="${user_ID}"/>
+<c:set var="userAUTH" value="${user_AUTH}"/>
 
 <!doctype html>
 <html lang="ko">
@@ -67,7 +68,11 @@
                     <c:if test="${not empty userID}">
                     <li><a href="/mypage.do" class="nav-link px-2 text-white">마이페이지</a></li>
                     </c:if>
-
+                    <c:if test="${userAUTH eq 'ROLE_ADMIN'}">
+                        <div class="d-md-flex">
+                            <a class="btn btn-outline-light me-2" href="/admin/index.do">관리자 페이지</a>
+                        </div>
+                    </c:if>
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -76,9 +81,6 @@
                 </form>
 
                 <div class="text-end">
-
-
-
                     <c:choose>
                         <c:when test="${not empty userID}">
                             <span class="text-white me-2">Welcome ${userID}</span>
@@ -89,6 +91,7 @@
                             <a class="btn btn-warning" href="signup.do">회원가입</a>
                         </c:otherwise>
                     </c:choose>
+
                 </div>
             </div>
         </div>
