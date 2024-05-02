@@ -8,15 +8,15 @@
 <html lang="ko">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+    <link href="admin/css/style.css" rel="stylesheet"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Dashboard - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <title>nhn아카데미 shopping mall</title>
 
     <style>
@@ -24,25 +24,31 @@
         body {
             background-color: #f8f9fa;
         }
+
         .card {
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .card-header {
             background-color: #007bff;
             color: white;
             border-radius: 15px 15px 0 0;
         }
+
         .card-title {
             font-size: 24px;
         }
+
         .form-group label {
             font-weight: bold;
         }
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
         }
+
         .btn-primary:hover {
             background-color: #0056b3;
             border-color: #0056b3;
@@ -66,7 +72,7 @@
                     <li><a href="/index.do" class="nav-link px-2 text-secondary">Home</a></li>
 
                     <c:if test="${not empty userID}">
-                    <li><a href="/mypage.do" class="nav-link px-2 text-white">마이페이지</a></li>
+                        <li><a href="/mypage.do" class="nav-link px-2 text-white">마이페이지</a></li>
                     </c:if>
                     <c:if test="${userAUTH eq 'ROLE_ADMIN'}">
                         <div class="d-md-flex">
