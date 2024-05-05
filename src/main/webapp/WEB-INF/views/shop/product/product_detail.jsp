@@ -24,7 +24,7 @@
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                             data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="carousel-control-prev-ico n" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
@@ -123,8 +123,9 @@
     }
 
     function addToCart() {
-        // item id 가져오기
+        // item id 및 product field 가져오기
         var itemId = "${item.getId()}";
+        var productField = parseInt(document.getElementById('count').value);
 
         // AJAX 요청
         var xhr = new XMLHttpRequest();
@@ -136,6 +137,9 @@
                 alert("상품이 장바구니에 추가되었습니다.");
             }
         };
-        xhr.send("itemId=" + encodeURIComponent(itemId));
+
+        // 요청 데이터 설정
+        var requestData = "itemId=" + encodeURIComponent(itemId) + "&productField=" + encodeURIComponent(productField);
+        xhr.send(requestData);
     }
 </script>

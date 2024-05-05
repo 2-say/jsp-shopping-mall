@@ -4,7 +4,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,4 +59,23 @@ public class ImageDao {
             throw new RuntimeException(e);
         }
     }
+
+    public String findImageById(String productId) {
+        String sql = "SELECT image_name FROM product_image WHERE product_id = ?";
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setString(1, productId);
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("image_name");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }

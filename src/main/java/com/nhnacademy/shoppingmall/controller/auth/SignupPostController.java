@@ -51,8 +51,6 @@ public class SignupPostController implements BaseController {
         }
 
         HttpSession session = req.getSession(true);
-        session.setAttribute(SessionConst.CART_MAP, new HashMap<Product, Integer>());
-
         repository.save(user);
 
         return "redirect:/login.do";
