@@ -75,7 +75,7 @@
                         </button>
                     </form>
                     &nbsp
-                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                    <button class="btn btn-outline-dark flex-shrink-0" type="button" onclick="addToCart()">
                         <i class="bi-cart-fill me-1"></i>
                         장바구니 담기
                     </button>
@@ -120,5 +120,22 @@
 
         // 총 상품 가격을 출력하는 요소 찾아서 업데이트
         document.getElementById('totalPrice').innerText = totalPrice.toLocaleString() + '원';
+    }
+
+    function addToCart() {
+        // item id 가져오기
+        var itemId = "${item.getId()}";
+
+        // AJAX 요청
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/cartAdd.do", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // 요청 완료 시 실행할 코드
+                alert("상품이 장바구니에 추가되었습니다.");
+            }
+        };
+        xhr.send("itemId=" + encodeURIComponent(itemId));
     }
 </script>

@@ -16,12 +16,7 @@ import java.time.LocalDateTime;
 public class UserUpdateController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        log.info(req.getMethod());
-
-
         // 생년월일 문자열에서 '-'를 제거하고 8자리의 숫자 형식으로 변환
-        log.info("?{} ", req.getParameter("birthdate"));
-        log.info("?{} ", req.getParameter("user_id"));
         String birthdate = req.getParameter("birthdate").replaceAll("-", "");
 
         // 사용자로부터 전달된 데이터를 사용하여 User 객체 생성

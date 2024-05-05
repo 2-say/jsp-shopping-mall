@@ -3,8 +3,8 @@ package com.nhnacademy.shoppingmall.controller.auth;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.util.SessionConst;
+import com.nhnacademy.shoppingmall.product.entity.Product;
 import com.nhnacademy.shoppingmall.user.domain.User;
-import com.nhnacademy.shoppingmall.user.exception.UserAlreadyExistsException;
 import com.nhnacademy.shoppingmall.user.repository.UserRepository;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import jakarta.validation.ConstraintViolation;
@@ -15,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Set;
 
 @Slf4j
@@ -47,6 +49,9 @@ public class SignupPostController implements BaseController {
             req.setAttribute("validate", validate);
             return "shop/signup/signup_form";
         }
+
+        HttpSession session = req.getSession(true);
+        session.setAttribute(SessionConst.CART_MAP, new HashMap<Product, Integer>());
 
         repository.save(user);
 

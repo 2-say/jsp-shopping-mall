@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @RequiredArgsConstructor
@@ -24,4 +25,18 @@ public class Product {
     private final int productField; //상품 재고
     private final LocalDateTime rDate;
     private final int category; //todo 타입 변경 필요
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
+
