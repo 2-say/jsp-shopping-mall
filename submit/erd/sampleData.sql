@@ -27,7 +27,8 @@ INSERT INTO category (category_id, category_name) VALUES
                                                       (3, '가구'),
                                                       (4, '도서'),
                                                       (5, '식품'),
-                                                      (6, '화장품');
+                                                      (6, '화장품'),
+                                                      (7, '기타');
 
 -- 하위 카테고리 추가
 INSERT INTO category (category_id, category_name, parent_category_id) VALUES

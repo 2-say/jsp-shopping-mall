@@ -9,6 +9,7 @@ import com.nhnacademy.shoppingmall.common.mvc.controller.ControllerFactory;
 
 import com.nhnacademy.shoppingmall.common.util.DbUtils;
 import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ import java.util.List;
 import static javax.servlet.RequestDispatcher.*;
 
 @Slf4j
-@WebServlet(name = "frontServlet",urlPatterns = {"*.do"})
+@WebServlet(name = "frontServlet", urlPatterns = {"*.do"})
 public class FrontServlet extends HttpServlet {
     private ControllerFactory controllerFactory;
     private ViewResolver viewResolver;
@@ -38,32 +39,34 @@ public class FrontServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try{
+        try {
             //todo7-3 Connection pool로 부터 connection 할당 받습니다. connection은 Thread 내에서 공유됩니다.
             DbConnectionThreadLocal.initialize();
 
             BaseController baseController = (BaseController) controllerFactory.getController(req);
-            String viewName = baseController.execute(req,resp);
+            String viewName = baseController.execute(req, resp);
 
-            if(viewResolver.isRedirect(viewName)){
-                String redirectUrl = viewResolver.getRedirectUrl(viewName);
-                log.info("redirectUrl:{}",redirectUrl);
-                //todo7-6 redirect: 로 시작하면  해당 url로 redirect 합니다.
-                resp.sendRedirect(redirectUrl);
-            }else {
-                String layout = viewResolver.getLayOut(viewName);
-                log.info("viewName:{}", viewResolver.getPath(viewName));
+            if (viewName != null) {
+                if (viewResolver.isRedirect(viewName)) {
+                    String redirectUrl = viewResolver.getRedirectUrl(viewName);
+                    log.info("redirectUrl:{}", redirectUrl);
+                    //todo7-6 redirect: 로 시작하면  해당 url로 redirect 합니다.
+                    resp.sendRedirect(redirectUrl);
+                } else {
+                    String layout = viewResolver.getLayOut(viewName);
+                    log.info("viewName:{}", viewResolver.getPath(viewName));
 
-                if(viewResolver.getPath(viewName).endsWith(".jsp")){
-                    initCategory(req);
+                    if (viewResolver.getPath(viewName).endsWith(".jsp")) {
+                        initCategory(req);
+                    }
+
+                    req.setAttribute(ViewResolver.LAYOUT_CONTENT_HOLDER, viewResolver.getPath(viewName));
+                    RequestDispatcher rd = req.getRequestDispatcher(layout);
+                    rd.include(req, resp);
                 }
-
-                req.setAttribute(ViewResolver.LAYOUT_CONTENT_HOLDER, viewResolver.getPath(viewName));
-                RequestDispatcher rd = req.getRequestDispatcher(layout);
-                rd.include(req, resp);
             }
-        }catch (Exception e){
-            log.error("error:{}",e);
+        } catch (Exception e) {
+            log.error("error:{}", e);
             DbConnectionThreadLocal.setSqlError(true);
             //todo7-5 예외가 발생하면 해당 예외에 대해서 적절한 처리를 합니다.
             //todo 에러마다 상세 기능 추가 필요
@@ -75,7 +78,7 @@ public class FrontServlet extends HttpServlet {
             log.error("status_code:{}", req.getAttribute(ERROR_STATUS_CODE));
             RequestDispatcher rd = req.getRequestDispatcher("/error.jsp");
             rd.forward(req, resp);
-        }finally {
+        } finally {
             //todo7-4 connection을 반납합니다.
             DbConnectionThreadLocal.reset();
         }

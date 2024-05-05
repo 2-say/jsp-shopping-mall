@@ -1,3 +1,4 @@
+<%@ page import="com.nhnacademy.shoppingmall.common.util.FileUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -18,7 +19,7 @@
 
                         <ul class="dropdown-menu">
                             <c:forEach items="${item.getCategories()}" var="child" varStatus="status1">
-                                <li><a class="dropdown-item" href="#">${child.getName()}</a></li>
+                                <li><a class="dropdown-item" href="index.do?category=${child.getName()}">${child.getName()}</a></li>
                             </c:forEach>
                         </ul>
                     </div>
@@ -34,13 +35,14 @@
     <c:forEach var="item" items="${pageItem.getContent()}" varStatus="status" begin="0" end="11">
         <div class="col">
             <div class="card shadow-sm">
-                <img src="${item.getFilePath()}${item.getFileName()}" height="300px" onerror="this.onerror=null; this.src='/resources/no-image.png';">
+
+                <img src="/loadImage.do?id=${item.getId()}" height="300px" onerror="this.onerror=null; this.src='/resources/no-image.png';">
+
                 <div class="card-body">
                     <p class="card-text">${item.getName()}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('get.do?id=${item.getId()}', '_blank');">View</button>
                         </div>
                         <small class="text-muted">${item.getPrice()}원</small>
                     </div>
@@ -90,3 +92,5 @@
         </li>
     </ul>
 </nav>
+
+

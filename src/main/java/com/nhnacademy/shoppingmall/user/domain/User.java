@@ -97,6 +97,10 @@ public class User {
         this.userPoint = userPoint;
     }
 
+    public String getParsingUserBirth() {
+        return userBirth.substring(0, 4) + "-" + userBirth.substring(4, 6) + "-" + userBirth.substring(6);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

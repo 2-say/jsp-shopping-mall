@@ -52,6 +52,7 @@ public class UserRepositoryImpl implements UserRepository {
         Connection connection = DbConnectionThreadLocal.getConnection();
         try {
             PreparedStatement pstm = connection.prepareStatement(sql);
+
             pstm.setString(1, userId);
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {

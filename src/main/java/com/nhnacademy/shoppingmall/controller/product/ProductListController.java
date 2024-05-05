@@ -1,4 +1,4 @@
-package com.nhnacademy.shoppingmall.controller.index;
+package com.nhnacademy.shoppingmall.controller.product;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
+
 @Slf4j
-@RequestMapping(method = RequestMapping.Method.GET, value = {"/index.do"})
-public class IndexController implements BaseController {
+@RequestMapping(method = RequestMapping.Method.GET, value = "/admin/productList.do")
+public class ProductListController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
+
         ProductDao productDao = new ProductDao();
         Page<Product> pageItem;
         int page = req.getParameter("page") != null ? Integer.parseInt(req.getParameter("page")) : 1;
@@ -30,10 +32,11 @@ public class IndexController implements BaseController {
         }
 
         pageItem = new Page<>(products, products.size());
+        log.info("page.size = {}", pageItem.getContent().size());
 
         req.setAttribute("page", page);
         req.setAttribute("pageItem", pageItem);
 
-        return "shop/main/index";
+        return "shop/admin/product/product_list";
     }
 }

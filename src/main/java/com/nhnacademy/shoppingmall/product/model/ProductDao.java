@@ -29,7 +29,7 @@ public class ProductDao {
             PreparedStatement pstm = connection.prepareStatement(sql);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
-                String productId = rs.getString("product_id");
+                int productId = rs.getInt("product_id");
                 String productName = rs.getString("product_name");
                 int productPrice = rs.getInt("product_price");
                 String productDescription = rs.getString("product_description");
@@ -39,10 +39,8 @@ public class ProductDao {
                 LocalDateTime rdate = LocalDateTime.parse(rs.getString("product_rdate"), formatter);
 
                 int category = rs.getInt("category_id");
-                String imageName = rs.getString("image_name");
-                String imagePath = rs.getString("image_path");
 
-                Product product = new Product(productId, productName, productPrice, productDescription, productField, rdate, category, imageName, imagePath);
+                Product product = new Product(productId, productName, productPrice, productDescription, productField, rdate, category);
                 list.add(product);
             }
         } catch (SQLException e) {
@@ -78,7 +76,7 @@ public class ProductDao {
             pstm.setString(1, categoryName);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
-                String productId = rs.getString("product_id");
+                int productId = rs.getInt("product_id");
                 String productName = rs.getString("product_name");
                 int productPrice = rs.getInt("product_price");
                 String productDescription = rs.getString("product_description");
@@ -88,9 +86,7 @@ public class ProductDao {
                 LocalDateTime rdate = LocalDateTime.parse(rs.getString("product_rdate"), formatter);
 
                 int category = rs.getInt("category_id");
-                String imageName = rs.getString("image_name");
-                String imagePath = rs.getString("image_path");
-                Product product = new Product(productId, productName, productPrice, productDescription, productField, rdate, category, imageName, imagePath);
+                Product product = new Product(productId, productName, productPrice, productDescription, productField, rdate, category);
                 list.add(product);
             }
         } catch (SQLException e) {

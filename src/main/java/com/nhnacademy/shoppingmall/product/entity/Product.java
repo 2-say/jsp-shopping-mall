@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 public class Product {
-    private final String id;
+    private final int id;
     @NotNull
     @NotBlank
     private final String name;
@@ -24,6 +24,4 @@ public class Product {
     private final int productField; //상품 재고
     private final LocalDateTime rDate;
     private final int category; //todo 타입 변경 필요
-    private final String fileName;
-    private final String filePath;
 }

@@ -31,15 +31,16 @@ public class CategorysDao {
                 String parentName = rs.getString("parent_name");
                 String childName = rs.getString("child_name");
                 int categoryId = rs.getInt("category_id");
+
                 if (currentParent == null) currentParent = parentName;
 
                 if (currentParent.equals(parentName)) {
-                    childList.add(new Category(categoryId,childName));
+                    childList.add(new Category(categoryId, childName));
                 } else {
-                    result.add(new Categories(childList, parentName));
+                    result.add(new Categories(childList, currentParent));
                     currentParent = parentName;
                     childList = new ArrayList<>();
-                    childList.add(new Category(categoryId,childName));
+                    childList.add(new Category(categoryId, childName));
                 }
             }
             rs.close();
@@ -50,4 +51,21 @@ public class CategorysDao {
         }
     }
 
+    public String findById(String id) {
+        String sql = "SELECT category_name FROM category WHERE category_id=?";
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setString(1, id);
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("category_name");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

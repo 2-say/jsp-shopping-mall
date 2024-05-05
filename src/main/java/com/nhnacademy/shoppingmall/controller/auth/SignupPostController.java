@@ -47,6 +47,9 @@ public class SignupPostController implements BaseController {
             req.setAttribute("validate", validate);
             return "shop/signup/signup_form";
         }
+
+        repository.save(user);
+
         return "redirect:/login.do";
     }
 }

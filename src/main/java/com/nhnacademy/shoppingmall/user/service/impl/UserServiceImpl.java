@@ -6,6 +6,7 @@ import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
 import com.nhnacademy.shoppingmall.user.repository.UserRepository;
 import com.nhnacademy.shoppingmall.user.service.UserService;
 
+import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
