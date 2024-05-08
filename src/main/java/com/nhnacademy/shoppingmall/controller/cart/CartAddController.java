@@ -1,46 +1,64 @@
 package com.nhnacademy.shoppingmall.controller.cart;
 
+import com.nhnacademy.shoppingmall.common.util.FormValidator;
+import com.nhnacademy.shoppingmall.entity.cart.domain.Cart;
+import com.nhnacademy.shoppingmall.entity.cart.repository.CartRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.cart.service.CartService;
+import com.nhnacademy.shoppingmall.entity.cart.service.CartServiceImpl;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.util.SessionConst;
-import com.nhnacademy.shoppingmall.product.entity.Product;
-import com.nhnacademy.shoppingmall.product.model.ImageDao;
-import com.nhnacademy.shoppingmall.product.repository.ProductRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.userscart.repository.UserCartRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
 
 
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/cartAdd.do")
 public class CartAddController implements BaseController {
+    private CartService cartService = new CartServiceImpl(new CartRepositoryImpl(), new UserCartRepositoryImpl());
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        String productId = req.getParameter("itemId");
-        int selectQuantity = Integer.parseInt(req.getParameter("productField"));
+        int productId = FormValidator.stringToInteger(req.getParameter("itemId"));
+        int selectQuantity = FormValidator.stringToInteger(req.getParameter("productField"));
 
-        ProductRepositoryImpl repository = new ProductRepositoryImpl();
-        Product product = repository.findById(productId).get();
-
+        //세션
         HttpSession session = req.getSession(true);
+        String userId = (String) session.getAttribute(SessionConst.LOGIN_USER_ID);
+        Integer cartId = (Integer) session.getAttribute(SessionConst.NON_MEMBER_CART_KEY);
 
-        if (session.getAttribute(SessionConst.CART_MAP) == null) {
-            session.setAttribute(SessionConst.CART_MAP,new HashMap<>());
-        }
 
-        Map<Product, Integer> cartMap = (Map<Product, Integer>) session.getAttribute(SessionConst.CART_MAP);
-
-        if (cartMap.containsKey(product)) {
-            cartMap.put(product, cartMap.get(product) + selectQuantity);
+        //회원 일 때
+        if (userId != null) {
+            doMemberService(userId, productId, selectQuantity);
         } else {
-            cartMap.put(product, selectQuantity);
+            doNonMemberService(cartId, productId, selectQuantity, session);
         }
 
-        session.setAttribute(SessionConst.CART_MAP, cartMap);
         return null;
     }
+
+
+    private void doMemberService(String userId, int productId, int selectQuantity) {
+        Integer cartId = null;
+
+        if (cartService.existsCartByUserId(userId)) {
+            cartId = cartService.findCartIdByUserid(userId);
+        }
+
+        Cart newCart = new Cart(cartId, productId, selectQuantity, LocalDateTime.now());
+        cartService.saveUserCart(userId, newCart);
+    }
+
+    private void doNonMemberService(Integer cartId, int productId, int selectQuantity, HttpSession session) {
+        Cart newCart = new Cart(cartId, productId, selectQuantity, LocalDateTime.now());
+        int insertCartId = cartService.saveNonMemberCart(newCart);
+        session.setAttribute(SessionConst.NON_MEMBER_CART_KEY, insertCartId);
+    }
+
+
 }

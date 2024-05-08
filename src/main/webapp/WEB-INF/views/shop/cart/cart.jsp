@@ -1,5 +1,3 @@
-<%@ page import="com.nhnacademy.shoppingmall.product.entity.Category" %>
-<%@ page import="com.nhnacademy.shoppingmall.category.CategorysDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -21,51 +19,54 @@
                         </thead>
                         <tbody>
 
-                        <c:forEach var="entry" items="${cartMap}" varStatus="status">
-                            <c:set var="product" value="${entry.key}"/>
-                            <c:set var="quantity" value="${entry.value}"/>
+                        <c:forEach var="cart" items="${cartViewList}" varStatus="status">
                             <tr>
                                 <th scope="row">
                                     <div class="d-flex align-items-center">
-                                        <img src="/loadImage.do?id=${product.getId()}" class="img-fluid rounded-3"`
+                                        <img src="/loadImage.do?id=${cart.getProduct().getId()}"
+                                             class="img-fluid rounded-3" `
                                              style="width: 120px;" alt="Book">
                                         <div class="flex-column ms-4">
-                                            <p class="mb-2">${product.getName()}</p>
+                                            <p class="mb-2">${cart.getProduct().getName()}</p>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="align-middle">
                                     <p class="mb-0" style="font-weight: 500;">
-                                        <%CategorysDao dao = new CategorysDao(); %>
-                                        <c:set var="categoryId" value="${product.getCategory()}"/>
-                                        <% String categoryName = dao.findById(String.valueOf(pageContext.getAttribute("categoryId"))); %>
-                                        <%= categoryName != null ? categoryName : "Category Not Found" %>
+                                            ${cart.getCategoryName()}
                                     </p>
                                 </td>
                                 <td class="align-middle">
                                     <div class="d-flex flex-row">
 
-                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" id="downButton${status.index}"
-                                                onclick="decrease('form${status.index}', 'hiddenPrice${status.index}' , 'totalPrice${status.index}')">
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
+                                                id="downButton${status.index}"
+                                                onclick="decrease('form${status.index}', 'hiddenPrice${status.index}' , 'totalPrice${status.index}', ${cart.getCartId()}, ${cart.getProduct().getId()})">
                                             <i class="fas fa-minus"></i>
                                         </button>
 
-                                        <input id="form${status.index}" min="0" name="quantity" value="${quantity}" type="number"
+                                        <input id="form${status.index}" min="1" name="quantity"
+                                               value="${cart.getProductQuantity()}"
+                                               type="number"
                                                class="form-control form-control-sm" style="width: 50px;"/>
 
-                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" id="upButton${status.index}"
-                                                onclick="increase('form${status.index}', 'hiddenPrice${status.index}'  , 'totalPrice${status.index}')">
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
+                                                id="upButton${status.index}"
+                                                onclick="increase('form${status.index}', 'hiddenPrice${status.index}'  , 'totalPrice${status.index}', ${cart.getCartId()} , ${cart.getProduct().getId()})">
                                             <i class="fas fa-plus"></i>
                                         </button>
 
                                     </div>
                                 </td>
                                 <td class="align-middle">
-                                    <input type="hidden" id="hiddenPrice${status.index}" value="${product.getPrice()}">
-                                    <p class="mb-0" id="totalPrice${status.index}" style="font-weight: 500;">${product.getPrice() * quantity} 원</p>
+                                    <input type="hidden" id="hiddenPrice${status.index}"
+                                           value="${cart.getProduct().getPrice()}">
+                                    <p class="mb-0" id="totalPrice${status.index}"
+                                       style="font-weight: 500;">${cart.getProduct().getPrice() * cart.getProductQuantity()}
+                                        원</p>
                                 </td>
                                 <td class="align-middle">
-                                    <a onclick="deleteToCart(${product.getId()})">
+                                    <a onclick="deleteToCart(${cart.getCartId()})">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                              fill="currentColor"
                                              class="bi bi-trash3" viewBox="0 0 16 16" id="cart-delete">
@@ -151,10 +152,9 @@
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4 mb-xl-5">
-                                            <input type="password" id="typeText" class="form-control form-control-lg"
-                                                   placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3"
+                                            <input type="number" id="typeText" class="form-control form-control-lg"
                                                    maxlength="3"/>
-                                            <label class="form-label" for="typeText">Cvv</label>
+                                            <label class="form-label" for="typeText">사용할 포인트</label>
                                         </div>
                                     </div>
                                 </div>
@@ -166,8 +166,8 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between" style="font-weight: 500;">
-                                    <p class="mb-0">Shipping</p>
-                                    <p class="mb-0">$2.99</p>
+                                    <p class="mb-0">포인트 할인</p>
+                                    <p class="mb-0">-$2.99</p>
                                 </div>
 
                                 <hr class="my-4">
@@ -178,9 +178,9 @@
                                 </div>
 
                                 <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                        class="btn btn-primary btn-block btn-lg">
+                                        class="btn btn-primary btn-block btn-lg" onclick="location='/orderView.do'">
                                     <div class="d-flex justify-content-between">
-                                        <span>Checkout</span>
+                                        <span>결제하기: </span>
                                         <span>$26.48</span>
                                     </div>
                                 </button>
@@ -197,16 +197,22 @@
 </section>
 
 <script>
-    function increase(inputId, itemPriceId, TotalPriceId) {
+    function increase(inputId, itemPriceId, TotalPriceId, cartId, productId) {
         var inputElement = document.getElementById(inputId);
         inputElement.stepUp();
         updateTotalPrice(inputElement, itemPriceId, TotalPriceId);
+
+        //ajax로 DB 1 수량 1 증가
+        addToCart(cartId, parseInt(inputElement.value), productId);
     }
 
-    function decrease(inputId, itemPriceId, TotalPriceId) {
+    function decrease(inputId, itemPriceId, TotalPriceId, cartId, productId) {
         var inputElement = document.getElementById(inputId);
         inputElement.stepDown();
         updateTotalPrice(inputElement, itemPriceId, TotalPriceId);
+
+        //ajax로 DB 1 수량 1 증가
+        addToCart(cartId, parseInt(inputElement.value), productId);
     }
 
     function updateTotalPrice(inputElement, itemPriceId, TotalPriceId) {
@@ -216,9 +222,8 @@
 
         document.getElementById(TotalPriceId).innerText = totalPrice + ' 원';
     }
-    function deleteToCart(itemId) {
-        // item id 가져오기
-        console.log(itemId);
+
+    function deleteToCart(cartId) {
         // AJAX 요청
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/cartDelete.do", true);
@@ -228,6 +233,19 @@
                 location.reload();
             }
         };
-        xhr.send("itemId=" + encodeURIComponent(itemId));
+        xhr.send("cartId=" + encodeURIComponent(cartId));
     }
+
+    function addToCart(cartId, productField, productId) {
+        // AJAX 요청
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/cartUpdate.do", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        // 요청 데이터 설정
+        var requestData = "productId=" + encodeURIComponent(productId) + "&cartId=" + encodeURIComponent(cartId) + "&productField=" + encodeURIComponent(productField);
+        xhr.send(requestData);
+    }
+
+
 </script>

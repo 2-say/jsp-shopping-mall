@@ -1,4 +1,4 @@
-<%@ page import="com.nhnacademy.shoppingmall.category.CategorysDao" %>
+<%@ page import="com.nhnacademy.shoppingmall.entity.category.repository.CategoryRepositoryImpl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -52,7 +52,7 @@
                                 <td>${item.getProductField()}</td>
 
                                 <td>
-                                    <%CategorysDao dao = new CategorysDao(); %>
+                                    <%CategoryRepositoryImpl dao = new CategoryRepositoryImpl(); %>
                                     <c:set var="categoryId" value="${item.getCategory()}"/>
                                     <% String categoryName = dao.findById(String.valueOf(pageContext.getAttribute("categoryId"))); %>
                                     <%= categoryName != null ? categoryName : "Category Not Found" %>

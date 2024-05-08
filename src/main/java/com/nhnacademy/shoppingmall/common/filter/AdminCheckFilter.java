@@ -2,9 +2,9 @@ package com.nhnacademy.shoppingmall.common.filter;
 
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.common.util.SessionConst;
-import com.nhnacademy.shoppingmall.user.domain.User;
-import com.nhnacademy.shoppingmall.user.repository.UserRepository;
-import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.user.domain.User;
+import com.nhnacademy.shoppingmall.entity.user.repository.UserRepository;
+import com.nhnacademy.shoppingmall.entity.user.repository.impl.UserRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;

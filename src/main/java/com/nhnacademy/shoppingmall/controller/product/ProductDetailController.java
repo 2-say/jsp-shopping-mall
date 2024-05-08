@@ -1,42 +1,44 @@
 package com.nhnacademy.shoppingmall.controller.product;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
-import com.nhnacademy.shoppingmall.product.entity.Product;
-import com.nhnacademy.shoppingmall.product.model.ImageDao;
-import com.nhnacademy.shoppingmall.product.repository.ProductRepositoryImpl;
+import com.nhnacademy.shoppingmall.common.util.FormValidator;
+import com.nhnacademy.shoppingmall.entity.image.repository.ImageRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.image.service.ImageServiceImpl;
+import com.nhnacademy.shoppingmall.entity.product.entity.Product;
+import com.nhnacademy.shoppingmall.entity.product.repository.impl.ProductRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.product.service.ProductService;
+import com.nhnacademy.shoppingmall.entity.product.service.impl.ProductServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = "/get.do")
 public class ProductDetailController implements BaseController {
+    public static final String RECENT_PRODUCTS = "recentProducts";
+    private ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
+    private ImageServiceImpl imageService = new ImageServiceImpl(new ImageRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-
-        ProductRepositoryImpl repository = new ProductRepositoryImpl();
-        Optional<Product> productOptional = repository.findById(req.getParameter("id"));
-        Product product = productOptional.get();
+        int productId = FormValidator.stringToInteger(req.getParameter("id"));
+        Product product = productService.findById(productId);
 
         req.setAttribute("item", product);
 
-        ImageDao imageDao = new ImageDao();
         // 이미지 파일 경로 및 ID 파라미터 확인
-        ArrayListMultimap<String, String> imageNameMap = imageDao.findById(String.valueOf(product.getId()));
+        List<String> imageList = imageService.findById(productId);
 
-        if (imageNameMap.isEmpty()) {
+        if (imageList.isEmpty()) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
 
-        List<String> imageList = imageNameMap.get(String.valueOf(product.getId()));
         req.setAttribute("imageList", imageList);
+
         return "shop/product/product_detail";
     }
 }

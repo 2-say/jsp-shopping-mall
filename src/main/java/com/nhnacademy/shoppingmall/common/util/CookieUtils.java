@@ -1,10 +1,18 @@
 package com.nhnacademy.shoppingmall.common.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Optional;
+
+import static com.nhnacademy.shoppingmall.controller.product.ProductDetailController.RECENT_PRODUCTS;
 
 public class CookieUtils {
 
@@ -50,6 +58,23 @@ public class CookieUtils {
                     response.addCookie(cookie);
                 }
             }
+        }
+    }
+
+    public static void AddObjectCookie(Object object,HttpServletResponse response ) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            String recentProductsJson = objectMapper.writeValueAsString(object);
+            String encodedRecentProductsJson = URLEncoder.encode(recentProductsJson, StandardCharsets.UTF_8.toString());
+            Cookie cookie = new Cookie(RECENT_PRODUCTS, encodedRecentProductsJson);
+            cookie.setPath("/");
+            cookie.setMaxAge(24 * 60 * 60); // Cookie 유효기간 1일로 설정
+            response.addCookie(cookie);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 }

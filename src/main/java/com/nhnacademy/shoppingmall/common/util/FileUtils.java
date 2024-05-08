@@ -71,10 +71,11 @@ public final class FileUtils {
         }
     }
 
+    public static void sendImageFile(String fileName, HttpServletResponse response) throws IOException {
+        File file = new File(FILE_PATH + fileName);
 
-    public static void sendImageFile(String filePath, String fileName, HttpServletResponse response) throws IOException {
-        File file = new File(filePath);
         if (!file.exists() || !file.isFile()) {
+            log.error("Not found file");
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -90,6 +91,32 @@ public final class FileUtils {
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
             }
+        } catch (Exception e) {
+            log.error("error {}", e.getMessage());
         }
+    }
+
+    public static boolean doesFileExist(String fileName) {
+        // 파일이 존재하는지 확인할 디렉토리 경로와 파일 이름을 인자로 받습니다.
+        File directory = new File(FILE_PATH);
+
+        // 해당 경로가 디렉토리인지 확인합니다.
+        if (!directory.isDirectory()) {
+            throw new IllegalArgumentException("Provided directory path is not valid.");
+        }
+
+        // 디렉토리 내에 파일 목록을 가져옵니다.
+        File[] files = directory.listFiles();
+
+        // 파일 목록을 순회하면서 주어진 파일 이름과 일치하는 파일이 있는지 확인합니다.
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile() && file.getName().equals(fileName)) {
+                    return true; // 파일이 존재합니다.
+                }
+            }
+        }
+
+        return false; // 파일이 존재하지 않습니다.
     }
 }

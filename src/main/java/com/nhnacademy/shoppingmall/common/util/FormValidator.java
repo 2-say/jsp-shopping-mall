@@ -10,4 +10,12 @@ public final class FormValidator {
             return false;
         }
     }
+
+    public static Integer stringToInteger(String target) {
+        if (isNumeric(target)) {
+            return Integer.parseInt(target);
+        } else {
+            throw new IllegalArgumentException("Error parse String to Integer " + target);
+        }
+    }
 }

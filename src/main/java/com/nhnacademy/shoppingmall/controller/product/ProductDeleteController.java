@@ -3,8 +3,8 @@ package com.nhnacademy.shoppingmall.controller.product;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.util.FormValidator;
-import com.nhnacademy.shoppingmall.product.model.ImageDao;
-import com.nhnacademy.shoppingmall.product.repository.ProductRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.image.repository.ImageRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.product.repository.impl.ProductRepositoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +16,7 @@ public class ProductDeleteController implements BaseController {
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         int productId = -1;
         ProductRepositoryImpl repository = new ProductRepositoryImpl();
-        ImageDao dao = new ImageDao();
+        ImageRepositoryImpl dao = new ImageRepositoryImpl();
 
         if (FormValidator.isNumeric(req.getParameter("productId"))) {
             productId = Integer.parseInt(req.getParameter("productId"));

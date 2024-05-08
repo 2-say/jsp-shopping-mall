@@ -1,24 +1,21 @@
 package com.nhnacademy.shoppingmall.common.mvc.servlet;
 
-import com.nhnacademy.shoppingmall.category.Categories;
-import com.nhnacademy.shoppingmall.category.CategorysDao;
+import com.nhnacademy.shoppingmall.entity.category.domain.Categories;
+import com.nhnacademy.shoppingmall.entity.category.repository.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.common.mvc.view.ViewResolver;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.mvc.controller.ControllerFactory;
 
-import com.nhnacademy.shoppingmall.common.util.DbUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.List;
 
 import static javax.servlet.RequestDispatcher.*;
@@ -66,7 +63,11 @@ public class FrontServlet extends HttpServlet {
                 }
             }
         } catch (Exception e) {
-            log.error("error:{}", e);
+            log.error("error: {}", e.getMessage());
+            log.error("error trace : {}", e.getStackTrace());
+
+
+
             DbConnectionThreadLocal.setSqlError(true);
             //todo7-5 예외가 발생하면 해당 예외에 대해서 적절한 처리를 합니다.
             //todo 에러마다 상세 기능 추가 필요
@@ -85,8 +86,8 @@ public class FrontServlet extends HttpServlet {
     }
 
     public void initCategory(HttpServletRequest req) {
-        CategorysDao categorysDao = new CategorysDao();
-        List<Categories> categorys = categorysDao.selectCategory();
+        CategoryRepositoryImpl categoryRepositoryImpl = new CategoryRepositoryImpl();
+        List<Categories> categorys = categoryRepositoryImpl.selectCategory();
         req.setAttribute("categories", categorys);
     }
 

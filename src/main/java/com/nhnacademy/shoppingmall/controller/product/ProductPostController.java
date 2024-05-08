@@ -4,9 +4,19 @@ import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.util.FileUtils;
 import com.nhnacademy.shoppingmall.common.util.FormValidator;
-import com.nhnacademy.shoppingmall.product.entity.Product;
-import com.nhnacademy.shoppingmall.product.model.ImageDao;
-import com.nhnacademy.shoppingmall.product.repository.ProductRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.category.repository.CategoryRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.category.service.CategoryService;
+import com.nhnacademy.shoppingmall.entity.category.service.CategoryServiceImpl;
+import com.nhnacademy.shoppingmall.entity.image.service.ImageService;
+import com.nhnacademy.shoppingmall.entity.image.service.ImageServiceImpl;
+import com.nhnacademy.shoppingmall.entity.product.entity.Product;
+import com.nhnacademy.shoppingmall.entity.image.repository.ImageRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.product.repository.impl.ProductRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.product.service.ProductService;
+import com.nhnacademy.shoppingmall.entity.product.service.impl.ProductServiceImpl;
+import com.nhnacademy.shoppingmall.entity.productcategory.repository.ProductCategoryRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.productcategory.service.ProductCategoryService;
+import com.nhnacademy.shoppingmall.entity.productcategory.service.ProductCategoryServiceImpl;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -22,33 +32,24 @@ import java.util.Set;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/admin/product.do")
 public class ProductPostController implements BaseController {
+
+    private ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
+    private ProductCategoryService productCategoryService = new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl());
+    private ImageService imageService = new ImageServiceImpl(new ImageRepositoryImpl());
+
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        ProductRepositoryImpl repository = new ProductRepositoryImpl();
-        int insertId = repository.findLastNumber();
-
-        Product product = null;
+        //이미지 저장
         Map<String, String> param = FileUtils.fileSave(req);
-        String product_price = (String) param.get("product_price");
-        String productField = (String) param.get("productField");
-        String category = (String) param.get("category");
 
-        //parsing Validator
-        if (FormValidator.isNumeric(product_price) && FormValidator.isNumeric(productField) && FormValidator.isNumeric(category)) {
-            String productName = (String) param.get("product_name");
-            int productPrice = Integer.parseInt(product_price);
-            int productFieldInt = Integer.parseInt(productField);
-            int categoryId = Integer.parseInt(category);
-            String description = (String) param.get("description");
+        //요청 파라미터
+        int productPrice = FormValidator.stringToInteger(param.get("product_price"));
+        int productField = FormValidator.stringToInteger(param.get("productField"));
+        int categoryId = FormValidator.stringToInteger(param.get("category"));
+        String productName = (String) param.get("product_name");
+        String description = (String) param.get("description");
 
-            if (param.get("productId") != null) {
-                insertId = Integer.parseInt(param.get("productId"));
-            }
-            product = new Product(insertId, productName, productPrice, description, productFieldInt, LocalDateTime.now(), categoryId);
-        } else {
-            req.setAttribute("error", "재고와, 가격은 숫자만 입력할 수 있습니다.");
-            return "shop/admin/product/product_form";
-        }
+        Product product = new Product(null, productName, productPrice, description, productField, LocalDateTime.now());
 
         //Validation
         final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -63,20 +64,18 @@ public class ProductPostController implements BaseController {
             }
             return "shop/admin/product/product_form";
         }
-        if (param.get("productId") != null) {
-            repository.update(product);
-        } else {
-            repository.save(product);
+
+
+        //상품 저장
+        int insertProductId = productService.saveProduct(product);
+        //상품 카테고리 저장
+        productCategoryService.saveProductCategory(insertProductId, categoryId);
+        //이미지 저장
+        List<String> fileNames = (List<String>) req.getAttribute("fileNames");
+        for (String fileName : fileNames) {
+            imageService.saveImage(insertProductId, fileName);
         }
 
-        ImageDao imageDao = new ImageDao();
-        List<String> fileNames = (List<String>) req.getAttribute("fileNames");
-        if (param.get("productId") != null) {
-            imageDao.deleteByProductId(insertId);
-        }
-        for (String fileName : fileNames) {
-            imageDao.save(insertId, fileName);
-        }
         return "redirect:/admin/index.do";
     }
 
