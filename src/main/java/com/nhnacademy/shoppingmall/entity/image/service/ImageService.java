@@ -11,4 +11,8 @@ public interface ImageService {
     List<String> findById(int productId);
 
     void saveImage(int productId, String fileName);
+
+    void updateImage(int productId, String fileName);
+
+    void deleteProductImage(Integer productId);
 }

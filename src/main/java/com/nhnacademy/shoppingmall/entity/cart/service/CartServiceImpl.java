@@ -43,7 +43,7 @@ public class CartServiceImpl implements CartService {
         Integer cartId = null;
 
         //넣으려는 장바구니가 중복된다면
-        if (cart.getCartId() != null && cartRepository.findDuplicate(cartId, cart.getProductId())) {
+        if (cart.getCartId() != null && cartRepository.findDuplicate(cart.getCartId(), cart.getProductId())) {
             cartRepository.update(cart);
         } else if (cart.getCartId() != null) {
             cartRepository.save(cart);
@@ -57,7 +57,7 @@ public class CartServiceImpl implements CartService {
     public List<Cart> findByCartId(int cartId) {
 
         if (!cartRepository.existsById(cartId)) {
-            throw new RuntimeException("Not Found Cart Id" + cartId);
+            throw new RuntimeException("Not Found Cart Id " + cartId);
         }
 
         List<Cart> cartList = cartRepository.findById(cartId);
@@ -115,5 +115,11 @@ public class CartServiceImpl implements CartService {
     @Override
     public int findCartIdByUserid(String userId) {
         return userCartRepository.findCartIdByUserId(userId);
+    }
+
+    @Override
+    public void deleteProductCart(int productId) {
+        cartRepository.deleteByProductId(productId);
+
     }
 }

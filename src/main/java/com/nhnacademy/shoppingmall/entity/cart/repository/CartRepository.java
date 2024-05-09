@@ -20,4 +20,6 @@ public interface CartRepository {
     void updateQuantity(int cartId, int productId, int newQuantity);
 
     boolean findDuplicate(int cartId, int productId);
+
+    void deleteByProductId(int productId);
 }

@@ -65,6 +65,7 @@ public class ProductPostController implements BaseController {
             return "shop/admin/product/product_form";
         }
 
+        //수정 -> update 호출
 
         //상품 저장
         int insertProductId = productService.saveProduct(product);

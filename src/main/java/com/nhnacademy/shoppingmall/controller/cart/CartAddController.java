@@ -31,7 +31,6 @@ public class CartAddController implements BaseController {
         String userId = (String) session.getAttribute(SessionConst.LOGIN_USER_ID);
         Integer cartId = (Integer) session.getAttribute(SessionConst.NON_MEMBER_CART_KEY);
 
-
         //회원 일 때
         if (userId != null) {
             doMemberService(userId, productId, selectQuantity);

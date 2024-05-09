@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteOneQuantity(int productId) {
         if(!repository.existByProductId(productId)) {
-            throw new RuntimeException("Not exist product id" + productId);
+            throw new RuntimeException("Not exist product id " + productId);
         }
 
         int leftField = repository.countProductFieldByProductId(productId);
@@ -59,6 +59,20 @@ public class ProductServiceImpl implements ProductService {
         }
 
         repository.deleteOneQuantity(productId);
+    }
+
+    @Override
+    public void productUpdate(Product product) {
+        if(!repository.existByProductId(product.getId())) {
+            throw new RuntimeException("Not exist product id " + product.getId());
+        }
+
+        repository.update(product);
+    }
+
+    @Override
+    public void deleteProduct(int productId) {
+        repository.delete(productId);
     }
 
 

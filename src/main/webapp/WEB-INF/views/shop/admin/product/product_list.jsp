@@ -1,4 +1,3 @@
-<%@ page import="com.nhnacademy.shoppingmall.entity.category.repository.CategoryRepositoryImpl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -47,25 +46,23 @@
                         <c:forEach items="${pageItem.getContent()}" var="item" varStatus="loop">
                             <tr>
                                 <td>${loop.index + 1}</td>
-                                <td><a href="get.do?id=${item.getId()}">${item.getName()}</a></td>
-                                <td>${item.getPrice()}</td>
-                                <td>${item.getProductField()}</td>
-
-                                <td>
-                                    <%CategoryRepositoryImpl dao = new CategoryRepositoryImpl(); %>
-                                    <c:set var="categoryId" value="${item.getCategory()}"/>
-                                    <% String categoryName = dao.findById(String.valueOf(pageContext.getAttribute("categoryId"))); %>
-                                    <%= categoryName != null ? categoryName : "Category Not Found" %>
+                                <td><a href="get.do?id=${item.getProduct().getId()}">${item.getProduct().getName()}</a>
                                 </td>
+                                <td>${item.getProduct().getPrice()}</td>
+                                <td>${item.getProduct().getProductField()}</td>
 
                                 <td>
-                                    <a href="/admin/productEdit.do?productId=${item.getId()}" class="btn btn-info btn-sm">
+                                    ${item.getCategoryName()}
+                                <td>
+                                    <a href="/admin/productEdit.do?productId=${item.getProduct().getId()}"
+                                       class="btn btn-info btn-sm">
                                         <i class="fas fa-edit"></i> 수정
                                     </a>
                                 </td>
 
                                 <td>
-                                    <a href="/admin/productDelete.do?productId=${item.getId()}" class="btn btn-danger btn-sm">
+                                    <a href="/admin/productDelete.do?productId=${item.getProduct().getId()}"
+                                       class="btn btn-danger btn-sm">
                                         <i class="fas fa-trash-alt"></i> 삭제
                                     </a>
                                 </td>
@@ -103,7 +100,7 @@
                 <c:set var="pageCount" value="${pageItem.getTotalCount() / 12 + 1}"/>
             </c:otherwise>
         </c:choose>
-        <c:forEach var="i" begin="1" end="${pageCount + 1}" step="1">
+        <c:forEach var="i" begin="1" end="${pageCount}" step="1">
             <li class="page-item"><a class="page-link <c:if test="${page eq i}">bg-info</c:if> "
                                      href="productList.do?page=${i}">${i}</a></li>
         </c:forEach>

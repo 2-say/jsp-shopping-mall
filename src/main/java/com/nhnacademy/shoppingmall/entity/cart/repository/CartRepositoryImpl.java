@@ -160,5 +160,19 @@ public class CartRepositoryImpl implements CartRepository {
         }
     }
 
+    @Override
+    public void deleteByProductId(int productId) {
+        String sql = "DELETE FROM cart WHERE product_id = ?";
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setInt(1, productId);
+            pstm.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

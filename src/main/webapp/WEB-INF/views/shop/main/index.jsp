@@ -36,13 +36,12 @@
 
         <!-- 최근 본 상품 목록 출력 -->
         <ul class="dropdown-menu">
-<%--            <c:forEach items="${recentlyViewedProducts}" var="product" varStatus="status">--%>
-            <c:forEach var="item" items="${pageItem.getContent()}" varStatus="status" begin="0" end="4">
+            <c:forEach items="${recentProducts}" var="product" varStatus="status">
                 <li>
                     <a class="dropdown-item" href="productDetails.do?id=${product.getId()}">
-                        <div class="bg-success p-2 text-white bg-opacity-75">${item.getName()}</div>
-<%--                        <p class="card-text">${item.getName()}</p>--%>
-                        <img class="justify-content-center" src="/loadImage.do?id=${item.getId()}" width="180px" height="140px" onerror="this.onerror=null; this.src='/resources/no-image.png';">
+                        <div class="bg-success p-2 text-white bg-opacity-75">${product.getName()}</div>
+                        <p class="card-text">${item.getName()}</p>
+                        <img class="justify-content-center" src="/loadImage.do?id=${product.getId()}" width="180px" height="140px" onerror="this.onerror=null; this.src='/resources/no-image.png';">
                     </a>
                 </li>
             </c:forEach>

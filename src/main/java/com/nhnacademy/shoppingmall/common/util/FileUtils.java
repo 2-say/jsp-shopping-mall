@@ -14,10 +14,10 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
+import static com.nhnacademy.shoppingmall.common.util.ApplicationConfigConst.FILE_PATH;
+
 @Slf4j
 public final class FileUtils {
-
-    public static final String FILE_PATH = "/Users/isehui/develop/Java/nhnAcademy/week10/shoppingmall_project/src/main/resources/imagefile/";
     private static final String CONTENT_TYPE = "image/jpeg"; // 이미지 파일인 경우 JPEG로 가정
 
     public static Map<String, String> fileSave(HttpServletRequest req) {

@@ -26,4 +26,5 @@ public interface CartService {
 
     int findCartIdByUserid(String userId);
 
+    void deleteProductCart(int productId);
 }

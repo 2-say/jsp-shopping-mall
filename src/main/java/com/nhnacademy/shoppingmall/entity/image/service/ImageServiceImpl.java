@@ -40,10 +40,25 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void saveImage(int productId, String fileName) {
         if (!FileUtils.doesFileExist(fileName)) {
-            throw new IllegalArgumentException("Not found image file" + fileName);
+            throw new IllegalArgumentException("Not found image file " + fileName);
         }
 
         repository.save(productId, fileName);
+    }
+
+    @Override
+    public void updateImage(int productId, String fileName) {
+        if (!FileUtils.doesFileExist(fileName)) {
+            throw new IllegalArgumentException("Not found image file " + fileName);
+        }
+
+        repository.deleteByProductId(productId);
+        repository.save(productId, fileName);
+    }
+
+    @Override
+    public void deleteProductImage(Integer productId) {
+        repository.deleteByProductId(productId);
     }
 
 }

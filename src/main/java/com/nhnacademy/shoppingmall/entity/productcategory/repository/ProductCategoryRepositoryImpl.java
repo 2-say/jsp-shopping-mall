@@ -56,7 +56,9 @@ public class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
     @Override
     public void delete(int productId) {
         String sql = "DELETE FROM product_category WHERE product_id=?";
-        try (Connection connection = DbConnectionThreadLocal.getConnection(); PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, productId);
             pstmt.executeUpdate();
         } catch (SQLException e) {

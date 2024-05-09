@@ -25,4 +25,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         //TODO: exist 처리
         return repository.findByProductId(productId);
     }
+
+    @Override
+    public void deleteProductCategory(int productId) {
+        repository.delete(productId);
+    }
 }
