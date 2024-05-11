@@ -1,6 +1,5 @@
 package com.nhnacademy.shoppingmall.domain.image.repository;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.nhnacademy.shoppingmall.global.common.mvc.transaction.DbConnectionThreadLocal;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,13 +30,13 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
 
     @Override
-    public int deleteByProductId(int productId) {
+    public void deleteByProductId(int productId) {
         String sql = "DELETE FROM product_image WHERE product_id = ?";
         Connection connection = DbConnectionThreadLocal.getConnection();
         try {
             PreparedStatement pstm = connection.prepareStatement(sql);
             pstm.setInt(1, productId);
-            return pstm.executeUpdate();
+            pstm.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
