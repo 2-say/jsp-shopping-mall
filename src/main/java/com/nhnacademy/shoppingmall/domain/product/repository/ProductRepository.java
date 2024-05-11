@@ -26,5 +26,4 @@ public interface ProductRepository {
 
     void decreaseProductQuantity(Integer productId, int amount);
 
-    int countProductFieldByProductId(Integer productId);
 }

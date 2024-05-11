@@ -48,12 +48,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDetailViewDTO getProductView(Integer productId) {
+        if (productId == null) {
+            throw new IllegalArgumentException("Not found productId");
+        }
+
         List<String> imageNames = imageRepository.findAllImageNameById(productId);
         Optional<Product> product = productRepository.findById(productId);
 
         if (imageNames.isEmpty()) {
             return new ProductDetailViewDTO(product.get(), null);
         }
+
+        if (product.isEmpty()) throw new RuntimeException("Not found product");
         return new ProductDetailViewDTO(product.get(), imageNames);
     }
 
@@ -86,8 +92,10 @@ public class ProductServiceImpl implements ProductService {
 
         List<String> imageNames = imageRepository.findAllImageNameById(productId);
         Optional<Product> product = productRepository.findById(productId);
+        Integer categoryId = productCategoryRepository.findByProductId(productId);
 
-        Integer categoryId =  productCategoryRepository.findByProductId(productId);
+        if (product.isEmpty() || categoryId == null) throw new RuntimeException("Not found product");
+
         String categoryName = categoryRepository.findById(categoryId);
 
         return new ProductAddFormDTO(product.get(), imageNames, categoryName);
@@ -134,6 +142,10 @@ public class ProductServiceImpl implements ProductService {
             imageRepository.deleteByProductId(productId);
             cartRepository.deleteByProductId(productId);
             productRepository.delete(productId);
+        } else if(productId == null){
+            log.error("상품이 ID null 입니다.");
+        } else if(!productRepository.existByProductId(productId)) {
+            log.error("삭제할 상품이 존재하지 않습니다. {}", productId);
         }
     }
 }

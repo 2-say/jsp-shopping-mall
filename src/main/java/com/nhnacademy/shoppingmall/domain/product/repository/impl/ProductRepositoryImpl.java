@@ -205,7 +205,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
 
-
     //상품 존재 확인
     @Override
     public boolean existByProductId(Integer productId) {
@@ -245,23 +244,5 @@ public class ProductRepositoryImpl implements ProductRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public int countProductFieldByProductId(Integer productId) {
-        String sql = "SELECT product_field FROM product WHERE product_id = ? ";
-        Connection connection = DbConnectionThreadLocal.getConnection();
-
-        try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setInt(1, productId);
-            ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("product_field");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return 0; // 상품 ID에 해당하는 product_field가 없을 경우 0을 반환합니다.
     }
 }

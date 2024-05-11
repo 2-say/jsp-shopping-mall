@@ -1,13 +1,10 @@
-<%@ page import="com.nhnacademy.shoppingmall.global.common.util.FileUtils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
 
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
-
             <div class="col-md-6">
-
                 <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -33,7 +30,6 @@
                         <span class="visually-hidden">Next</span>
                     </button>
                 </div>
-
             </div>
 
 
