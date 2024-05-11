@@ -16,7 +16,7 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*")
 public class LoginCheckFilter extends HttpFilter {
 
-    private static final String[] list = {"/mypage/" , "/orderView"};
+    private static final String[] list = {"/mypage/" , "/order/"};
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {

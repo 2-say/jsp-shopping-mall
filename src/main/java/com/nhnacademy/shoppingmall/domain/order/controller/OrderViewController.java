@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
-@RequestMapping(method = RequestMapping.Method.GET, value = "/orderView.do")
+@RequestMapping(method = RequestMapping.Method.GET, value = "/order/view.do")
 public class OrderViewController implements BaseController {
     private OrderService orderService = new OrderServiceImpl();
 

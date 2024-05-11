@@ -49,7 +49,8 @@ public final class FileUtils {
 
                     File file = new File(ApplicationConfigConst.FILE_PATH, fileName);
 
-                    if(!file.exists() || file.isDirectory()) {
+                    if(fileName.isBlank()) {
+                        log.error("FILE이 존재하지 않습니다.");
                         return param;
                     }
 

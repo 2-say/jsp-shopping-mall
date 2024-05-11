@@ -23,8 +23,4 @@ public interface ProductService {
 
     void deleteProduct(Integer productId);
 
-//
-//    void deleteOneQuantity(int productId);
-//
-
 }

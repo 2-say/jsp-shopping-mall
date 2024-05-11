@@ -2,6 +2,8 @@ package com.nhnacademy.shoppingmall.global.common.mvc.servlet;
 
 import com.nhnacademy.shoppingmall.domain.category.domain.Categories;
 import com.nhnacademy.shoppingmall.domain.category.repository.CategoryRepositoryImpl;
+import com.nhnacademy.shoppingmall.domain.point.exception.PointChargeException;
+import com.nhnacademy.shoppingmall.global.common.mvc.exception.ControllerNotFoundException;
 import com.nhnacademy.shoppingmall.global.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.global.common.mvc.view.ViewResolver;
 import com.nhnacademy.shoppingmall.global.common.mvc.controller.BaseController;
@@ -67,16 +69,23 @@ public class FrontServlet extends HttpServlet {
             log.error("error trace : {}", e.getStackTrace());
             log.error("error cause : {}", e.getCause());
 
-
-            DbConnectionThreadLocal.setSqlError(true);
-            //todo7-5 예외가 발생하면 해당 예외에 대해서 적절한 처리를 합니다.
-            //todo 에러마다 상세 기능 추가 필요
             req.setAttribute("status_code", req.getAttribute(ERROR_STATUS_CODE));
             req.setAttribute("exception_type", req.getAttribute(ERROR_EXCEPTION_TYPE));
             req.setAttribute("message", req.getAttribute(ERROR_MESSAGE));
             req.setAttribute("exception", req.getAttribute(ERROR_EXCEPTION));
             req.setAttribute("request_uri", req.getAttribute(ERROR_REQUEST_URI));
-            RequestDispatcher rd = req.getRequestDispatcher("/error.jsp");
+            DbConnectionThreadLocal.setSqlError(true);
+            RequestDispatcher rd = null;
+
+            //todo7-5 예외가 발생하면 해당 예외에 대해서 적절한 처리를 합니다.
+            if(e instanceof ControllerNotFoundException) {
+                rd = req.getRequestDispatcher("/WEB-INF/views/error/404.jsp");
+            } else if(e instanceof PointChargeException) {
+                req.setAttribute("message", "포인트 충전에 오류가 발생했습니다. 관리자에게 문의해주세요");
+                rd = req.getRequestDispatcher("/WEB-INF/views/error/error.jsp");
+            }else {
+                rd = req.getRequestDispatcher("/WEB-INF/views/error/500.jsp");
+            }
             rd.forward(req, resp);
         } finally {
             //todo7-4 connection을 반납합니다.

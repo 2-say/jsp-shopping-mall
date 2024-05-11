@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
-@RequestMapping(method = RequestMapping.Method.POST, value = "/orderSave.do")
+@RequestMapping(method = RequestMapping.Method.POST, value = "/order/save.do")
 public class OrderSaveController implements BaseController {
     private OrderService orderService = new OrderServiceImpl();
     @Override
@@ -53,10 +53,9 @@ public class OrderSaveController implements BaseController {
 
 
         //TODO: session에 주문 detail 번호 넣어서 최근껏만 넘어가도록 수정
-
         orderService.saveOrder(Optional.of(userId), orderForm, requestChannel);
 
-        return "redirect:/orderView.do";
+        return "redirect:/order/orderView.do";
     }
 
     private void validLogPrint(Set<ConstraintViolation<OrderForm>> validate) {

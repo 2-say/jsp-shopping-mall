@@ -42,11 +42,15 @@ public class ProductDetailViewController implements BaseController {
 
     private static void CookieAddRecentViewProduct(HttpServletRequest req, HttpServletResponse resp, ProductDetailViewDTO detailViewDTO) {
         Queue<Product> recentProducts = CookieUtils.getProductQueueFromCookie(req);
+
+        if (!recentProducts.contains(detailViewDTO.getProduct())) {
+            recentProducts.add(detailViewDTO.getProduct());
+        }
+
         while (recentProducts.size() > MAX_RECENT_VIEW_PRODUCT_SIZE) {
             recentProducts.remove();
         }
 
-        recentProducts.add(detailViewDTO.getProduct());
         CookieUtils.AddObjectCookie(recentProducts, resp);
     }
 }

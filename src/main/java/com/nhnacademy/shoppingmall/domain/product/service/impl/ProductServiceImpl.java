@@ -12,6 +12,7 @@ import com.nhnacademy.shoppingmall.domain.product.service.ProductService;
 import com.nhnacademy.shoppingmall.domain.product.repository.ProductCategoryRepository;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static com.nhnacademy.shoppingmall.global.common.util.ApplicationConfigConst.MAX_PAGE_SIZE;
 
+@Slf4j
 @Builder
 @Getter
 public class ProductServiceImpl implements ProductService {
@@ -50,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> product = productRepository.findById(productId);
 
         if (imageNames.isEmpty()) {
-            return null;
+            return new ProductDetailViewDTO(product.get(), null);
         }
         return new ProductDetailViewDTO(product.get(), imageNames);
     }
@@ -99,6 +101,7 @@ public class ProductServiceImpl implements ProductService {
         if (!fileNames.isEmpty()) {
             List<String> fileNameList = fileNames.get();
             for (String s : fileNameList) {
+                log.info("fileName ={} ", s);
                 imageRepository.save(insertProductId, s);
             }
         }

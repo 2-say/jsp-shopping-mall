@@ -64,7 +64,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     //상품 찾기
     @Override
     public Optional<Product> findById(Integer productId) {
-        String sql = "SELECT * FROM product WHERE product_id = ?";
+        String sql = "SELECT * FROM product WHERE product_id = ? AND product_field > 0";
         Connection connection = DbConnectionThreadLocal.getConnection();
 
         try {
@@ -140,7 +140,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         int endRow = startRow + pageSize;
 
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM product LIMIT " + String.valueOf(startRow) + "," + String.valueOf(endRow);
+        String sql = "SELECT * FROM product WHERE product_field > 0 LIMIT " + String.valueOf(startRow) + "," + String.valueOf(endRow);
         Connection connection = DbConnectionThreadLocal.getConnection();
         log.info("sql = {}" , sql);
         try {
@@ -176,7 +176,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         String sql = "SELECT p.* FROM product_category " +
                 "JOIN nhn_academy_31.category c on c.category_id = product_category.category_id\n" +
                 "JOIN nhn_academy_31.product p on p.product_id = product_category.product_id\n" +
-                "WHERE c.category_id = ? LIMIT ?, ? ";
+                "WHERE c.category_id = ? AND product_field > 0 LIMIT ?, ? ";
 
         Connection connection = DbConnectionThreadLocal.getConnection();
         try {
@@ -209,7 +209,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     //상품 존재 확인
     @Override
     public boolean existByProductId(Integer productId) {
-        String sql = "SELECT EXISTS(SELECT 1 FROM product WHERE product_id =?) as cnt";
+        String sql = "SELECT EXISTS(SELECT 1 FROM product WHERE product_id =? AND product_field > 0 ) as cnt";
         Connection connection = DbConnectionThreadLocal.getConnection();
 
         try {
@@ -249,7 +249,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public int countProductFieldByProductId(Integer productId) {
-        String sql = "SELECT product_field FROM product WHERE product_id = ?";
+        String sql = "SELECT product_field FROM product WHERE product_id = ? ";
         Connection connection = DbConnectionThreadLocal.getConnection();
 
         try {

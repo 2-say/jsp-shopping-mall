@@ -79,7 +79,7 @@
                 <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
                     <div class="card-body p-4">
                         <div class="row">
-                            <form id="checkoutForm" action="/orderSave.do" method="post">
+                            <form id="checkoutForm" action="/order/save.do" method="post">
                                 <div class="d-flex flex-column flex-xl-row">
                                     <div class="col-md col-lg-4 col-xl-6 mb-4 mb-xl-0">
                                         <div class="row">

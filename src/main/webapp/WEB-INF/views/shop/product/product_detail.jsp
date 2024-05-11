@@ -68,12 +68,12 @@
 
 
                 <div class="d-flex">
-                    <form action="@{/logout}" class="d-flex" method="post">
-                        <button class="btn btn-outline-dark"
-                                type="submit">
-                            바로 구매하기
-                        </button>
-                    </form>
+<%--                    <form action="@{/logout}" class="d-flex" method="post">--%>
+<%--                        <button class="btn btn-outline-dark"--%>
+<%--                                type="submit">--%>
+<%--                            바로 구매하기--%>
+<%--                        </button>--%>
+<%--                    </form>--%>
                     &nbsp
                     <button class="btn btn-outline-dark flex-shrink-0" type="button" onclick="addToCart()">
                         <i class="bi-cart-fill me-1"></i>
