@@ -25,8 +25,7 @@ public class PointChannelRequest extends ChannelRequest {
 
         try {
             DbConnectionThreadLocal.initialize();
-            //todo#14-5 포인트 적립구현, connection은 point적립이 완료되면 반납합니다.
-
+            //todo14-5 포인트 적립구현, connection은 point적립이 완료되면 반납합니다.
             PointServiceImpl pointService = new PointServiceImpl(new UserRepositoryImpl());
 
             int point = (int) (amount * RETURN_POINT_RATIO);
