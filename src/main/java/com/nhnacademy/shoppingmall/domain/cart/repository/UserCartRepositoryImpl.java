@@ -36,11 +36,10 @@ public class UserCartRepositoryImpl implements UserCartRepository {
             ResultSet rs = pstm.executeQuery();
 
             if (rs.next()) {
-                UserCart userCart = new UserCart(
+                return new UserCart(
                         rs.getInt("cart_id"),
                         rs.getString("user_id")
                 );
-                return userCart;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

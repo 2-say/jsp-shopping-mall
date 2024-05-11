@@ -20,7 +20,7 @@ import java.util.Optional;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = "/admin/productList.do")
 public class ProductListViewController implements BaseController {
-    private ProductService productService = ProductServiceImpl.builder()
+    private final ProductService productService = ProductServiceImpl.builder()
             .productRepository(new ProductRepositoryImpl())
             .productCategoryRepository(new ProductCategoryRepositoryImpl())
             .categoryRepository(new CategoryRepositoryImpl())
@@ -28,7 +28,7 @@ public class ProductListViewController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         //요청 파라미터
-        int currPage = req.getParameter("page") != null ? FormValidator.stringToInteger(req.getParameter("page")) : 1;
+        Integer currPage = req.getParameter("page") != null ? FormValidator.stringToInteger(req.getParameter("page")) : 1;
         Optional<Integer> categoryId = Optional.ofNullable(FormValidator.stringToInteger(req.getParameter("categoryId")));
 
         List<ProductListViewDTO> productListViewDTOS = productService.getProductListWithCategory(categoryId, currPage);

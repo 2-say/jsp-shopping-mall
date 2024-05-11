@@ -31,12 +31,12 @@ import java.util.Optional;
 
 @Slf4j
 public class OrderServiceImpl implements OrderService {
-    private OrderRepository orderRepository = new OrderRepositoryImpl();
-    private OrderDetailRepository orderDetailRepository = new OrderDetailRepositoryImpl();
-    private CartService cartService = new CartServiceImpl(new CartRepositoryImpl(), new UserCartRepositoryImpl(), new ProductRepositoryImpl());
-    private ProductRepository productRepository = new ProductRepositoryImpl();
-    private UserService userService = new UserServiceImpl(new UserRepositoryImpl());
-    private UserCartRepository userCartRepository = new UserCartRepositoryImpl();
+    private final OrderRepository orderRepository = new OrderRepositoryImpl();
+    private final OrderDetailRepository orderDetailRepository = new OrderDetailRepositoryImpl();
+    private final CartService cartService = new CartServiceImpl(new CartRepositoryImpl(), new UserCartRepositoryImpl(), new ProductRepositoryImpl());
+    private final ProductRepository productRepository = new ProductRepositoryImpl();
+    private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final UserCartRepository userCartRepository = new UserCartRepositoryImpl();
 
 
     /**
@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void saveOrder(Optional<String> userId, OrderForm orderForm, RequestChannel requestChannel) {
 
-        CartViewDTO cartView = cartService.getCartView(userId, null);
+        CartViewDTO cartView = cartService.getCartView(userId, Optional.empty());
         List<CartViewDTO.ProductQuantity> products = cartView.getProducts();
 
         int totalPay = 0;

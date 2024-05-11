@@ -24,7 +24,7 @@ import java.util.Set;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/admin/productEdit.do")
 public class ProductEditController implements BaseController {
-    private ProductService productService = ProductServiceImpl.builder()
+    private final ProductService productService = ProductServiceImpl.builder()
             .productRepository(new ProductRepositoryImpl())
             .build();
 
@@ -34,9 +34,9 @@ public class ProductEditController implements BaseController {
         Map<String, String> param = FileUtils.fileSave(req);
 
         //요청 파라미터
-        int productId = FormValidator.stringToInteger(param.get("productId"));
-        int productPrice = FormValidator.stringToInteger(param.get("product_price"));
-        int productField = FormValidator.stringToInteger(param.get("productField"));
+        Integer productId = FormValidator.stringToInteger(param.get("productId"));
+        Integer productPrice = FormValidator.stringToInteger(param.get("product_price"));
+        Integer productField = FormValidator.stringToInteger(param.get("productField"));
         Optional<Integer> categoryId = Optional.ofNullable(FormValidator.stringToInteger(param.get("category")));
         String productName = (String) param.get("product_name");
         String description = (String) param.get("description");

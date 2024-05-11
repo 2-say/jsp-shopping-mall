@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(method = RequestMapping.Method.GET, value = "/admin/productEdit.do")
 public class ProductEditFormController implements BaseController {
 
-    private ProductService productService = ProductServiceImpl.builder()
+    private final ProductService productService = ProductServiceImpl.builder()
             .productRepository(new ProductRepositoryImpl())
             .imageRepository(new ImageRepositoryImpl())
             .productCategoryRepository(new ProductCategoryRepositoryImpl())

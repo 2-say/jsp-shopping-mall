@@ -41,7 +41,9 @@ public class ProductServiceImpl implements ProductService {
         if (categoryId.isEmpty()) {
             productList = productRepository.findByPageSize(page, MAX_PAGE_SIZE);
         } else {
-            productList = productRepository.findByProductAndCategoryLimit(categoryId.get(), page, MAX_PAGE_SIZE).get();
+            if(productRepository.findByProductAndCategoryLimit(categoryId.get(), page, MAX_PAGE_SIZE).isPresent()) {
+                productList = productRepository.findByProductAndCategoryLimit(categoryId.get(), page, MAX_PAGE_SIZE).get();
+            }
         }
         return productList;
     }
@@ -56,7 +58,9 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> product = productRepository.findById(productId);
 
         if (imageNames.isEmpty()) {
-            return new ProductDetailViewDTO(product.get(), null);
+            if (product.isPresent()) {
+                return new ProductDetailViewDTO(product.get(), null);
+            }
         }
 
         if (product.isEmpty()) throw new RuntimeException("Not found product");
@@ -69,9 +73,10 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalArgumentException("Wrong page value ");
         }
 
-        List<Product> productList = categoryId.isEmpty() ?
-                productRepository.findByPageSize(page, MAX_PAGE_SIZE) :
-                productRepository.findByProductAndCategoryLimit(categoryId.get(), page, MAX_PAGE_SIZE).orElse(new ArrayList<>());
+        List<Product> productList = categoryId.map(integer ->
+                productRepository.findByProductAndCategoryLimit(integer, page, MAX_PAGE_SIZE)
+                        .orElse(new ArrayList<>())).orElseGet(() ->
+                productRepository.findByPageSize(page, MAX_PAGE_SIZE));
 
         List<ProductListViewDTO> productListViewDTOS = new ArrayList<>(productList.size());
 
@@ -123,16 +128,14 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.update(product);
 
-        if (!fileNames.isEmpty()) {
+        if (fileNames.isPresent()) {
             imageRepository.deleteByProductId(product.getId());
             for (String s : fileNames.get()) {
                 imageRepository.save(product.getId(), s);
             }
         }
 
-        if (!categoryId.isEmpty()) {
-            productCategoryRepository.update(product.getId(), categoryId.get());
-        }
+        categoryId.ifPresent(integer -> productCategoryRepository.update(product.getId(), integer));
     }
 
     @Override

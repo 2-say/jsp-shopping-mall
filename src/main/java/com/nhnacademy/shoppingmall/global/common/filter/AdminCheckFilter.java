@@ -31,8 +31,13 @@ public class AdminCheckFilter extends HttpFilter {
         if (isAdminCheckPath(req.getRequestURI())) {
             HttpSession session = req.getSession(false);
             UserRepository repository = new UserRepositoryImpl();
-            log.info("userId = {}",(String) session.getAttribute(SessionConst.LOGIN_USER_ID) );
+            log.info("userId = {}", session.getAttribute(SessionConst.LOGIN_USER_ID));
             Optional<User> userOptional = repository.findById((String) session.getAttribute(SessionConst.LOGIN_USER_ID));
+
+            if(userOptional.isEmpty()){
+                throw new RuntimeException("NOT FOUND USER");
+            }
+
             User user = userOptional.get();
             if (user.getUserAuth() == User.Auth.ROLE_USER) {
                 res.sendError(HttpServletResponse.SC_FORBIDDEN);

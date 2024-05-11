@@ -26,7 +26,7 @@ import java.util.Set;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/admin/product.do")
 public class ProductAddController implements BaseController {
-    private ProductService productService = ProductServiceImpl.builder()
+    private final ProductService productService = ProductServiceImpl.builder()
             .productRepository(new ProductRepositoryImpl())
             .productCategoryRepository(new ProductCategoryRepositoryImpl())
             .imageRepository(new ImageRepositoryImpl())
@@ -38,11 +38,11 @@ public class ProductAddController implements BaseController {
         Map<String, String> param = FileUtils.fileSave(req);
 
         //요청 파라미터
-        int productPrice = FormValidator.stringToInteger(param.get("product_price"));
-        int productField = FormValidator.stringToInteger(param.get("productField"));
+        Integer productPrice = FormValidator.stringToInteger(param.get("product_price"));
+        Integer productField = FormValidator.stringToInteger(param.get("productField"));
         Integer categoryId = FormValidator.stringToInteger(param.get("category"));
-        String productName = (String) param.get("product_name");
-        String description = (String) param.get("description");
+        String productName = param.get("product_name");
+        String description = param.get("description");
 
         Product product = new Product(null, productName, productPrice, description, productField, LocalDateTime.now());
 

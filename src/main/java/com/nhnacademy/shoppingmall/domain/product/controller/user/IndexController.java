@@ -22,13 +22,13 @@ import java.util.Queue;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = {"/index.do"})
 public class IndexController implements BaseController {
-    private ProductService service = ProductServiceImpl.builder()
+    private final ProductService service = ProductServiceImpl.builder()
             .productRepository(new ProductRepositoryImpl())
             .imageRepository(new ImageRepositoryImpl())
             .build();
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        Integer currPage = req.getParameter("page") != null ? FormValidator.stringToInteger(req.getParameter("page")) : 1;
+        int currPage = req.getParameter("page") != null ? FormValidator.stringToInteger(req.getParameter("page")) : 1;
         Integer categoryId = req.getParameter("categoryId") != null ? FormValidator.stringToInteger(req.getParameter("categoryId")) : null;
 
         List<Product> productList = service.findAllByCategoryLimitPage(Optional.ofNullable(categoryId), currPage);
@@ -49,7 +49,6 @@ public class IndexController implements BaseController {
             CookieUtils.AddObjectCookie(new ArrayList<>(), resp);
         }
 
-        Queue<Product> recentProducts = CookieUtils.getProductQueueFromCookie(req);
-        return recentProducts;
+        return CookieUtils.getProductQueueFromCookie(req);
     }
 }

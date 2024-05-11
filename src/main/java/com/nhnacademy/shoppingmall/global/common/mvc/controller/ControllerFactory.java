@@ -33,13 +33,8 @@ public class ControllerFactory {
                     log.info("[ControllerFactory] input = {}",method.toUpperCase() + "-"+ s);
                     beanMap.put(method.toUpperCase() + "-" + s, instance);
                 }
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchMethodException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         }

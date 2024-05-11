@@ -21,7 +21,7 @@ import static com.nhnacademy.shoppingmall.global.common.util.FormValidator.strin
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = "/get.do")
 public class ProductDetailViewController implements BaseController {
-    private ProductService productService = ProductServiceImpl.builder()
+    private final ProductService productService = ProductServiceImpl.builder()
             .productRepository(new ProductRepositoryImpl())
             .imageRepository(new ImageRepositoryImpl())
             .build();

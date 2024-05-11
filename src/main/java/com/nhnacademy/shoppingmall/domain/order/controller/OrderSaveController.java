@@ -22,7 +22,7 @@ import java.util.Set;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/order/save.do")
 public class OrderSaveController implements BaseController {
-    private OrderService orderService = new OrderServiceImpl();
+    private final OrderService orderService = new OrderServiceImpl();
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession(false);
