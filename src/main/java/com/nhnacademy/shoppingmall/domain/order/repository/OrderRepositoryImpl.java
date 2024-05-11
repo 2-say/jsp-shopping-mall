@@ -53,31 +53,6 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public List<Order> findAll() {
-        String sql = "SELECT * FROM `order`";
-        Connection connection = DbConnectionThreadLocal.getConnection();
-        List<Order> orders = new ArrayList<>();
-
-        try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            ResultSet rs = pstm.executeQuery();
-
-            while (rs.next()) {
-                Order order = new Order(
-                        rs.getInt("product_id"),
-                        rs.getString("user_id"),
-                        rs.getInt("order_detail_id"));
-                orders.add(order);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return orders;
-    }
-
-    @Override
     public void update(Order order) {
         String sql = "UPDATE `order` SET product_id = ?, user_id = ?, order_detail_id = ? WHERE order_detail_id = ?";
         Connection connection = DbConnectionThreadLocal.getConnection();

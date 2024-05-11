@@ -9,7 +9,7 @@ public interface UserCartRepository {
 
     void delete(int cartId);
 
-    boolean existsCartByUserId(String userId);
+    boolean isExistsCartByUserId(String userId);
 
     Integer findCartIdByUserId(String userId);
 }

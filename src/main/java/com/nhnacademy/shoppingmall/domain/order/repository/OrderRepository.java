@@ -9,8 +9,6 @@ public interface OrderRepository {
 
     Order findById(int order_detail_id);
 
-    List<Order> findAll();
-
     void update(Order order);
 
     void delete(int order_detail_id);

@@ -51,7 +51,7 @@ public class CartServiceImpl implements CartService {
 
         //회원이 있을 경우
         if (!userId.isEmpty()) {
-            if (!userCartRepository.existsCartByUserId(userId.get())) {
+            if (userCartRepository.isExistsCartByUserId(userId.get())) {
                 return new ArrayList<>();
             }
             Integer cartId = userCartRepository.findCartIdByUserId(userId.get());
@@ -96,7 +96,7 @@ public class CartServiceImpl implements CartService {
 
     private void saveUserCart(Integer productId, Integer selectQuantity, String userId) {
         //처음 장바구니 만들었을 경우
-        if (!userCartRepository.existsCartByUserId(userId)) {
+        if (userCartRepository.isExistsCartByUserId(userId)) {
             int newCartId = cartRepository.saveNotHaveCartId(new Cart(null, productId, selectQuantity, LocalDateTime.now()));
             userCartRepository.save(new UserCart(newCartId, userId));
         } else {
