@@ -1,4 +1,4 @@
-package com.nhnacademy.shoppingmall.global.common.util;
+package com.nhnacademy.shoppingmall.global;
 
 public class ApplicationConfigConst {
     //이미지 파일 경로

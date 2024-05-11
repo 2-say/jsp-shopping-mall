@@ -5,10 +5,8 @@ import com.nhnacademy.shoppingmall.domain.user.service.impl.UserServiceImpl;
 import com.nhnacademy.shoppingmall.global.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.global.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.domain.user.domain.User;
-import com.nhnacademy.shoppingmall.domain.user.repository.UserRepository;
 import com.nhnacademy.shoppingmall.domain.user.repository.impl.UserRepositoryImpl;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Valid;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import static com.nhnacademy.shoppingmall.global.common.util.ApplicationConfigConst.INIT_USER_POINT;
+import static com.nhnacademy.shoppingmall.global.ApplicationConfigConst.INIT_USER_POINT;
 
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/signup.do")

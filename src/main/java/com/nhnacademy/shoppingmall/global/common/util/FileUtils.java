@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.global.common.util;
 
+import com.nhnacademy.shoppingmall.global.ApplicationConfigConst;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletOutputStream;

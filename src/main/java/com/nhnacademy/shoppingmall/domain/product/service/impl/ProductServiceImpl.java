@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.nhnacademy.shoppingmall.global.common.util.ApplicationConfigConst.MAX_PAGE_SIZE;
+import static com.nhnacademy.shoppingmall.global.ApplicationConfigConst.MAX_PAGE_SIZE;
 
 @Slf4j
 @Builder

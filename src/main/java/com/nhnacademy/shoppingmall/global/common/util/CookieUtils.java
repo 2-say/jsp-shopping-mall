@@ -15,7 +15,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-
 public class CookieUtils {
     public static final String RECENT_PRODUCTS = "recentProducts";
 

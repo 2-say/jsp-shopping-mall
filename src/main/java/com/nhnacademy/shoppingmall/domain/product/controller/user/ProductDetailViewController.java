@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Queue;
 
-import static com.nhnacademy.shoppingmall.global.common.util.ApplicationConfigConst.MAX_RECENT_VIEW_PRODUCT_SIZE;
+import static com.nhnacademy.shoppingmall.global.ApplicationConfigConst.MAX_RECENT_VIEW_PRODUCT_SIZE;
 import static com.nhnacademy.shoppingmall.global.common.util.FormValidator.stringToInteger;
 
 @Slf4j
@@ -33,14 +33,14 @@ public class ProductDetailViewController implements BaseController {
 
         ProductDetailViewDTO detailViewDTO = productService.getProductView(productId);
 
-        CookieAddRecentViewProduct(req, resp, detailViewDTO);
+        cookieAddRecentViewProduct(req, resp, detailViewDTO);
 
         req.setAttribute("detailViewDTO", detailViewDTO);
 
         return "shop/product/product_detail";
     }
 
-    private static void CookieAddRecentViewProduct(HttpServletRequest req, HttpServletResponse resp, ProductDetailViewDTO detailViewDTO) {
+    private static void cookieAddRecentViewProduct(HttpServletRequest req, HttpServletResponse resp, ProductDetailViewDTO detailViewDTO) {
         Queue<Product> recentProducts = CookieUtils.getProductQueueFromCookie(req);
 
         if (!recentProducts.contains(detailViewDTO.getProduct())) {
