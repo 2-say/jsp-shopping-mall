@@ -21,7 +21,7 @@ public class CookieUtils {
     // 쿠키 가져오기
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length > 0) {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(name)) {
                     return Optional.of(cookie);
@@ -51,7 +51,7 @@ public class CookieUtils {
     // 쿠키 삭제하기
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length > 0) {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(name)) {
                     cookie.setValue("");
@@ -68,7 +68,7 @@ public class CookieUtils {
         Cookie[] cookies = request.getCookies();
 
         // 쿠키 배열이 null이 아니고 길이가 0보다 큰 경우에만 실행
-        if (cookies != null && cookies.length > 0) {
+        if (cookies != null) {
             // 쿠키 배열을 순회하면서 특정 이름의 쿠키가 있는지 확인
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(cookieName)) {
@@ -104,7 +104,7 @@ public class CookieUtils {
                 if (cookie.getName().equals(RECENT_PRODUCTS)) {
                     try {
                         String encodedProductQueueJson = cookie.getValue();
-                        String decodedProductQueueJson = URLDecoder.decode(encodedProductQueueJson, StandardCharsets.UTF_8.toString());
+                        String decodedProductQueueJson = URLDecoder.decode(encodedProductQueueJson, StandardCharsets.UTF_8);
                         ObjectMapper objectMapper = new ObjectMapper();
                         objectMapper.registerModule(new JavaTimeModule());
                         return objectMapper.readValue(decodedProductQueueJson, new TypeReference<>() {

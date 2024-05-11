@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/cartDelete.do")
 public class CartDeleteController implements BaseController {
-    private CartService service = new CartServiceImpl(new CartRepositoryImpl(), new UserCartRepositoryImpl(), new ProductRepositoryImpl());
+    private final CartService service = new CartServiceImpl(new CartRepositoryImpl(), new UserCartRepositoryImpl(), new ProductRepositoryImpl());
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         Integer cartId = FormValidator.stringToInteger(req.getParameter("cartId"));

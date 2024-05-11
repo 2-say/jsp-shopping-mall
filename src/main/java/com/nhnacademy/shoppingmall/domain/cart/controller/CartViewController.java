@@ -19,7 +19,7 @@ import java.util.Optional;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = "/cart.do")
 public class CartViewController implements BaseController {
-    private CartService cartService = new CartServiceImpl(new CartRepositoryImpl(), new UserCartRepositoryImpl(), new ProductRepositoryImpl());
+    private final CartService cartService = new CartServiceImpl(new CartRepositoryImpl(), new UserCartRepositoryImpl(), new ProductRepositoryImpl());
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession(false);

@@ -14,8 +14,8 @@ public interface CartService {
 
     void saveCart(Integer productId, Integer selectQuantity, Optional<String> userId, Optional<Integer> nonMemberCartId, HttpSession session);
 
-    void deleteCart(int cartId);
+    void deleteCart(Integer cartId);
 
-    void updateCartProductQuantity(int cartId, int productId, int quantity);
+    void updateCartProductQuantity(Integer cartId, Integer productId, Integer quantity);
 
 }

@@ -122,13 +122,20 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCart(int cartId) {
-        userCartRepository.delete(cartId);
-        cartRepository.delete(cartId);
+    public void deleteCart(Integer cartId) {
+        if(cartId == null) {
+            log.error("cartId is null");
+        } else {
+            userCartRepository.delete(cartId);
+            cartRepository.delete(cartId);
+        }
     }
 
     @Override
-    public void updateCartProductQuantity(int cartId, int productId, int quantity) {
+    public void updateCartProductQuantity(Integer cartId, Integer productId, Integer quantity) {
+        if (cartId == null || productId == null || quantity == null) {
+            throw new IllegalArgumentException("Parameter is null");
+        }
         cartRepository.updateQuantity(cartId, productId, quantity);
     }
 

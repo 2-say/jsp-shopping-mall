@@ -21,7 +21,7 @@ import static com.nhnacademy.shoppingmall.global.ApplicationConfigConst.INIT_USE
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/signup.do")
 public class SignupController implements BaseController {
-    private UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {

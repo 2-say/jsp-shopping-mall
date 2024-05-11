@@ -121,7 +121,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         int endRow = startRow + pageSize;
 
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM product WHERE product_field > 0 LIMIT " + String.valueOf(startRow) + "," + String.valueOf(endRow);
+        String sql = "SELECT * FROM product WHERE product_field > 0 LIMIT " + startRow + "," + endRow;
         Connection connection = DbConnectionThreadLocal.getConnection();
         log.info("sql = {}" , sql);
         try {

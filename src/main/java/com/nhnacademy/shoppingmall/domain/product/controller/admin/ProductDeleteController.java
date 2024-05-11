@@ -16,7 +16,7 @@ import java.util.Queue;
 
 @RequestMapping(method = RequestMapping.Method.GET, value = "/admin/productDelete.do")
 public class ProductDeleteController  implements BaseController {
-    private ProductService productService = ProductServiceImpl.builder()
+    private final ProductService productService = ProductServiceImpl.builder()
             .productRepository(new ProductRepositoryImpl())
             .productCategoryRepository(new ProductCategoryRepositoryImpl())
             .productCategoryRepository(new ProductCategoryRepositoryImpl())
@@ -35,11 +35,7 @@ public class ProductDeleteController  implements BaseController {
     private static void cookieDeleteRecentProduct(HttpServletRequest req, HttpServletResponse resp, Integer productId) {
         Queue<Product> recentProducts = CookieUtils.getProductQueueFromCookie(req);
 
-        for (Product recentProduct : recentProducts) {
-            if(recentProduct.getId() ==  productId) {
-                recentProducts.remove(recentProduct);
-            }
-        }
+        recentProducts.removeIf(recentProduct -> recentProduct.getId().equals(productId));
 
         CookieUtils.AddObjectCookie(recentProducts, resp);
     }
