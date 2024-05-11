@@ -3,8 +3,6 @@ package com.nhnacademy.shoppingmall.domain.order.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Getter
 @RequiredArgsConstructor
 public class Order {

@@ -6,23 +6,21 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository {
-    public int save(Product product);
+    int save(Product product);
 
-    public int delete(Integer productId);
+    int delete(Integer productId);
 
-    public Optional<Product> findById(Integer productId);
+    Optional<Product> findById(Integer productId);
 
-    public void update(Product product);
+    void update(Product product);
 
-    public int findLastNumber();
+    List<Product> findByPageSize(int page, int pageSize);
 
-    public List<Product> findByPageSize(int page, int pageSize);
-
-    public Optional<List<Product>> findByProductAndCategoryLimit(Integer categoryId, int page, int pageSize);
+    Optional<List<Product>> findByProductAndCategoryLimit(Integer categoryId, int page, int pageSize);
 
     //카테고리 해당하는 사이즈만큼 상품 가져오기
 
-    public boolean existByProductId(Integer productId);
+    boolean existByProductId(Integer productId);
 
     void decreaseProductQuantity(Integer productId, int amount);
 

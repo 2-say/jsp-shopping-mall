@@ -114,25 +114,6 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
     }
 
-
-    //상품 테이블 마지막 번호 찾기
-    @Override
-    public int findLastNumber() {
-        String sql = "SELECT MAX(product.product_id) + 1 AS next_id FROM product";
-        Connection connection = DbConnectionThreadLocal.getConnection();
-
-        try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("next_id");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return -1;
-    }
-
     //사이즈만큼 상품 가져오기
     @Override
     public List<Product> findByPageSize(int page, int pageSize) {

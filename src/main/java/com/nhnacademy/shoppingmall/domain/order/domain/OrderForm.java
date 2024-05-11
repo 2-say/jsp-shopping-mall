@@ -1,12 +1,10 @@
 package com.nhnacademy.shoppingmall.domain.order.domain;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 

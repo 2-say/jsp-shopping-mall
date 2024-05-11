@@ -64,12 +64,13 @@ public class FrontServlet extends HttpServlet {
                     req.setAttribute(ViewResolver.LAYOUT_CONTENT_HOLDER, viewResolver.getPath(viewName));
                     RequestDispatcher rd = req.getRequestDispatcher(layout);
 
+
                     String filePath = getServletContext().getRealPath("/WEB-INF/views/layout/shop.jsp");
                     log.info("filePath = {}", filePath);
                     File file = new File(filePath);
 
                     if (!file.exists()) {
-                        throw new PageNotFoundException("Not found Page ");
+                        throw new PageNotFoundException("Not found Page = " + layout);
                     }
 
                     rd.include(req, resp);
