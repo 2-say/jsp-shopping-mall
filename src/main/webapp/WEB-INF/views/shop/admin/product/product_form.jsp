@@ -10,7 +10,7 @@
     };
 </script>
 
-<c:set var="product" value="${item}"/>
+<c:set var="product" value="${productAddFormView}"/>
 
 <section class="testimonial py-5" id="testimonial">
     <div class="container">
@@ -38,38 +38,46 @@
                     <form action="/admin/product.do" method="post" enctype="multipart/form-data">
                         </c:otherwise>
                         </c:choose>
-                        <input type="hidden" id="productId" name="productId" value="${product.getId()}">
+                        <input type="hidden" id="productId" name="productId" value="${product.getProduct().getId()}">
                         <div class="form-row">
                             <div class="form-group col-md-6 p-3">
                                 <input id="product_name" name="product_name" placeholder="Name" class="form-control"
                                        type="text"
-                                       value="${product.getName()}">
+                                       value="${product.getProduct().getName()}">
                                 <c:if test="${not empty validate}">
-                                    <!-- Validation errors handling -->
+                                    <c:forEach var="error" items="${validate}">
+                                        <c:if test="${error.propertyPath == 'name'}">
+                                            <span style="color: red;">${error.message}</span>
+                                        </c:if>
+                                    </c:forEach>
                                 </c:if>
                             </div>
                             <div class="form-group col-md-6 p-3">
                                 <input id="product_price" name="product_price" placeholder="Price" class="form-control"
                                        type="text"
-                                       value="${product.getPrice()}">
-                                <c:if test="${not empty validate}">
-                                    <!-- Validation errors handling -->
-                                </c:if>
+                                       value="${product.getProduct().getPrice()}">
+                                <c:forEach var="error" items="${validate}">
+                                    <c:if test="${error.propertyPath == 'price'}">
+                                        <span style="color: red;">${error.message}</span>
+                                    </c:if>
+                                </c:forEach>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12 p-3">
                             <textarea id="description" name="description" cols="40" rows="5" class="form-control"
-                                      placeholder="Description">${product.getDescription()}</textarea>
+                                      placeholder="Description">${product.getProduct().getDescription()}</textarea>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6 p-3">
                                 <input id="productField" name="productField" placeholder="Product Field"
-                                       class="form-control" type="number" value="${product.getProductField()}">
-                                <c:if test="${not empty validate}">
-                                    <!-- Validation errors handling -->
-                                </c:if>
+                                       class="form-control" type="number" value="${product.getProduct().getProductField()}">
+                                <c:forEach var="error" items="${validate}">
+                                    <c:if test="${error.propertyPath == 'productField'}">
+                                        <span style="color: red;">${error.message}</span>
+                                    </c:if>
+                                </c:forEach>
                             </div>
                             <div class="form-group col-md-6 p-3">
                                 <select id="category" name="category" class="form-control">
@@ -77,16 +85,13 @@
                                         <optgroup label="${item.getParentName()}">
                                             <c:forEach items="${item.getCategories()}" var="child" varStatus="status1">
                                                 <option value="${child.getId()}"
-                                                        <c:if test="${child.getName() eq categoryName}">selected</c:if>>
+                                                        <c:if test="${child.getName() eq product.getCategoryName()}">selected</c:if>>
                                                         ${child.getName()}
                                                 </option>
                                             </c:forEach>
                                         </optgroup>
                                     </c:forEach>
                                 </select>
-                                <c:if test="${not empty validate}">
-                                    <!-- Validation errors handling -->
-                                </c:if>
                             </div>
                         </div>
                         <div class="form-row">

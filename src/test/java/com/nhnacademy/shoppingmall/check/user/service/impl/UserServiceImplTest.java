@@ -1,11 +1,11 @@
 package com.nhnacademy.shoppingmall.check.user.service.impl;
 
-import com.nhnacademy.shoppingmall.entity.user.domain.User;
-import com.nhnacademy.shoppingmall.entity.user.exception.UserAlreadyExistsException;
-import com.nhnacademy.shoppingmall.entity.user.exception.UserNotFoundException;
-import com.nhnacademy.shoppingmall.entity.user.repository.UserRepository;
-import com.nhnacademy.shoppingmall.entity.user.service.UserService;
-import com.nhnacademy.shoppingmall.entity.user.service.impl.UserServiceImpl;
+import com.nhnacademy.shoppingmall.domain.user.domain.User;
+import com.nhnacademy.shoppingmall.domain.user.exception.UserAlreadyExistsException;
+import com.nhnacademy.shoppingmall.domain.user.exception.UserNotFoundException;
+import com.nhnacademy.shoppingmall.domain.user.repository.UserRepository;
+import com.nhnacademy.shoppingmall.domain.user.service.UserService;
+import com.nhnacademy.shoppingmall.domain.user.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

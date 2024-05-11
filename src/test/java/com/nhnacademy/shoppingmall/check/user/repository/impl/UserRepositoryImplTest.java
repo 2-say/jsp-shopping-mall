@@ -1,9 +1,9 @@
 package com.nhnacademy.shoppingmall.check.user.repository.impl;
 
-import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
-import com.nhnacademy.shoppingmall.entity.user.domain.User;
-import com.nhnacademy.shoppingmall.entity.user.repository.UserRepository;
-import com.nhnacademy.shoppingmall.entity.user.repository.impl.UserRepositoryImpl;
+import com.nhnacademy.shoppingmall.global.common.mvc.transaction.DbConnectionThreadLocal;
+import com.nhnacademy.shoppingmall.domain.user.domain.User;
+import com.nhnacademy.shoppingmall.domain.user.repository.UserRepository;
+import com.nhnacademy.shoppingmall.domain.user.repository.impl.UserRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 

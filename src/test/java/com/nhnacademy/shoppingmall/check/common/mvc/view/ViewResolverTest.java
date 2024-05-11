@@ -1,6 +1,6 @@
 package com.nhnacademy.shoppingmall.check.common.mvc.view;
 
-import com.nhnacademy.shoppingmall.common.mvc.view.ViewResolver;
+import com.nhnacademy.shoppingmall.global.common.mvc.view.ViewResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

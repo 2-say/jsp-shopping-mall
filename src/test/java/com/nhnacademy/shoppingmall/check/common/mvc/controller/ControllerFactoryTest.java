@@ -1,11 +1,11 @@
 package com.nhnacademy.shoppingmall.check.common.mvc.controller;
 
-import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
-import com.nhnacademy.shoppingmall.common.mvc.controller.ControllerFactory;
-import com.nhnacademy.shoppingmall.common.mvc.exception.ControllerNotFoundException;
-import com.nhnacademy.shoppingmall.controller.index.IndexController;
-import com.nhnacademy.shoppingmall.controller.auth.LoginController;
-import com.nhnacademy.shoppingmall.controller.auth.LoginPostController;
+import com.nhnacademy.shoppingmall.global.common.mvc.controller.BaseController;
+import com.nhnacademy.shoppingmall.global.common.mvc.controller.ControllerFactory;
+import com.nhnacademy.shoppingmall.global.common.mvc.exception.ControllerNotFoundException;
+import com.nhnacademy.shoppingmall.domain.product.controller.user.IndexController;
+import com.nhnacademy.shoppingmall.domain.auth.LoginController;
+import com.nhnacademy.shoppingmall.domain.auth.LoginPostController;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;

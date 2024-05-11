@@ -1,6 +1,6 @@
 package com.nhnacademy.shoppingmall.check.common.util;
 
-import com.nhnacademy.shoppingmall.common.util.DbUtils;
+import com.nhnacademy.shoppingmall.global.common.util.DbUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;

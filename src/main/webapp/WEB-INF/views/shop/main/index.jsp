@@ -18,7 +18,7 @@
 
                         <ul class="dropdown-menu">
                             <c:forEach items="${item.getCategories()}" var="child" varStatus="status1">
-                                <li><a class="dropdown-item" href="index.do?category=${child.getName()}">${child.getName()}</a></li>
+                                <li><a class="dropdown-item" href="index.do?categoryId=${child.getId()}">${child.getName()}</a></li>
                             </c:forEach>
                         </ul>
                     </div>
@@ -38,16 +38,15 @@
         <ul class="dropdown-menu">
             <c:forEach items="${recentProducts}" var="product" varStatus="status">
                 <li>
-                    <a class="dropdown-item" href="productDetails.do?id=${product.getId()}">
+                    <a class="dropdown-item" href="productDetails.do?productId=${product.getId()}">
                         <div class="bg-success p-2 text-white bg-opacity-75">${product.getName()}</div>
                         <p class="card-text">${item.getName()}</p>
-                        <img class="justify-content-center" src="/loadImage.do?id=${product.getId()}" width="180px" height="140px" onerror="this.onerror=null; this.src='/resources/no-image.png';">
+                        <img class="justify-content-center" src="/loadImage.do?productId=${product.getId()}" width="180px" height="140px" onerror="this.onerror=null; this.src='/resources/no-image.png';">
                     </a>
                 </li>
             </c:forEach>
         </ul>
     </div>
-
 </div>
 
 <br>
@@ -57,13 +56,13 @@
         <div class="col">
             <div class="card shadow-sm">
 
-                <img src="/loadImage.do?id=${item.getId()}" height="300px" onerror="this.onerror=null; this.src='/resources/no-image.png';">
+                <img src="/loadImage.do?productId=${item.getId()}" height="300px" onerror="this.onerror=null; this.src='/resources/no-image.png';">
 
                 <div class="card-body">
                     <p class="card-text">${item.getName()}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('get.do?id=${item.getId()}', '_blank');">View</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('get.do?productId=${item.getId()}', '_blank');">View</button>
                         </div>
                         <small class="text-muted">${item.getPrice()}원</small>
                     </div>

@@ -1,6 +1,6 @@
 package com.nhnacademy.shoppingmall.view.product;
 
-import com.nhnacademy.shoppingmall.entity.product.entity.Product;
+import com.nhnacademy.shoppingmall.domain.product.entity.Product;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

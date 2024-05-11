@@ -1,4 +1,4 @@
-<%@ page import="com.nhnacademy.shoppingmall.common.util.FileUtils" %>
+<%@ page import="com.nhnacademy.shoppingmall.global.common.util.FileUtils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
 
@@ -15,9 +15,9 @@
                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
-                        <c:forEach var="image" items="${imageList}">
+                        <c:forEach var="imageName" items="${detailViewDTO.getImageNameList()}">
                             <div class="carousel-item active">
-                                <img src="/loadImage.do?image=${image}" class="d-block w-100" width="500px" height="500px"
+                                <img src="/loadImage.do?imageName=${imageName}" class="d-block w-100" width="500px" height="500px"
                                      onerror="this.onerror=null; this.src='/resources/no-image.png';">
                             </div>
                         </c:forEach>
@@ -38,17 +38,17 @@
 
 
             <div class="col-md-6">
-                <h1 class="display-5 fw-bolder">${item.getName()}</h1>
+                <h1 class="display-5 fw-bolder">${detailViewDTO.getProduct().getName()}</h1>
                 <div class="fs-5 mb-5">
-                    <input type="hidden" value="${item.getPrice()}" id="price" name="price">
-                    <span class="text-decoration-none">${item.getPrice()}</span>원
+                    <input type="hidden" value="${detailViewDTO.getProduct().getPrice()}" id="price" name="price">
+                    <span class="text-decoration-none">${detailViewDTO.getProduct().getPrice()}</span>원
                 </div>
                 <hr class="my-4">
 
                 <div class="input-group fs-5 mb-5">
                     <div class="input-group-prepend">
-                        <input type="hidden" value="${item.getProductField()}" id="${item.getProductField()}"
-                               name="${item.getProductField()}">
+                        <input type="hidden" value="${detailViewDTO.getProduct().getProductField()}" id="${detailViewDTO.getProduct().getProductField()}"
+                               name="${detailViewDTO.getProduct().getProductField()}">
                         <span class="input-group-text">주문 수량</span>
                     </div>
                     <input class="form-control text-center me-3" id="count" name="count" type="number" value="1"
@@ -63,7 +63,7 @@
 
                 <div class="container bg-light fs-5 mb-5">
                     <h6>상품 설명</h6>
-                    <h7><p class="mb-0">${item.getDescription()}</p></h7>
+                    <h7><p class="mb-0">${detailViewDTO.getProduct().getDescription()}</p></h7>
                 </div>
 
 
@@ -124,7 +124,7 @@
 
     function addToCart() {
         // item id 및 product field 가져오기
-        var itemId = "${item.getId()}";
+        var itemId = "${detailViewDTO.getProduct().getId()}";
         var productField = parseInt(document.getElementById('count').value);
 
         // AJAX 요청

@@ -11,7 +11,6 @@
                         <thead>
                         <tr>
                             <th scope="col" class="h5">Shopping Bag</th>
-                            <th scope="col">category</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Price</th>
                             <th scope="col"></th>
@@ -19,40 +18,36 @@
                         </thead>
                         <tbody>
 
-                        <c:forEach var="cart" items="${cartViewList}" varStatus="status">
+                        <c:forEach var="item" items="${cartViewList.getProducts()}" varStatus="status">
                             <tr>
                                 <th scope="row">
                                     <div class="d-flex align-items-center">
-                                        <img src="/loadImage.do?id=${cart.getProduct().getId()}"
+                                        <img src="/loadImage.do?productId=${item.getProduct().getId()}"
                                              class="img-fluid rounded-3" `
-                                             style="width: 120px;" alt="Book">
+                                             style="width: 120px;" alt="no Image">
                                         <div class="flex-column ms-4">
-                                            <p class="mb-2">${cart.getProduct().getName()}</p>
+                                            <p class="mb-2">${item.getProduct().getName()}</p>
                                         </div>
                                     </div>
                                 </th>
-                                <td class="align-middle">
-                                    <p class="mb-0" style="font-weight: 500;">
-                                            ${cart.getCategoryName()}
-                                    </p>
-                                </td>
+
                                 <td class="align-middle">
                                     <div class="d-flex flex-row">
 
                                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
                                                 id="downButton${status.index}"
-                                                onclick="decrease('form${status.index}', 'hiddenPrice${status.index}' , 'totalPrice${status.index}', ${cart.getCartId()}, ${cart.getProduct().getId()})">
+                                                onclick="decrease('form${status.index}', 'hiddenPrice${status.index}' , 'totalPrice${status.index}', ${cartViewList.getCartId()}, ${item.getProduct().getId()})">
                                             <i class="fas fa-minus"></i>
                                         </button>
 
                                         <input id="form${status.index}" min="1" name="quantity"
-                                               value="${cart.getProductQuantity()}"
+                                               value="${item.getSelectQuantity()}"
                                                type="number"
                                                class="form-control form-control-sm" style="width: 50px;"/>
 
                                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
                                                 id="upButton${status.index}"
-                                                onclick="increase('form${status.index}', 'hiddenPrice${status.index}'  , 'totalPrice${status.index}', ${cart.getCartId()} , ${cart.getProduct().getId()})">
+                                                onclick="increase('form${status.index}', 'hiddenPrice${status.index}'  , 'totalPrice${status.index}', ${cartViewList.getCartId()} , ${item.getProduct().getId()})">
                                             <i class="fas fa-plus"></i>
                                         </button>
 
@@ -60,13 +55,13 @@
                                 </td>
                                 <td class="align-middle">
                                     <input type="hidden" id="hiddenPrice${status.index}"
-                                           value="${cart.getProduct().getPrice()}">
+                                           value="${item.getProduct().getPrice()}">
                                     <p class="mb-0" id="totalPrice${status.index}"
-                                       style="font-weight: 500;">${cart.getProduct().getPrice() * cart.getProductQuantity()}
+                                       style="font-weight: 500;">${item.getProduct().getPrice() * item.getSelectQuantity()}
                                         원</p>
                                 </td>
                                 <td class="align-middle">
-                                    <a onclick="deleteToCart(${cart.getCartId()})">
+                                    <a onclick="deleteToCart(${cartViewList.getCartId()})">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                              fill="currentColor"
                                              class="bi bi-trash3" viewBox="0 0 16 16" id="cart-delete">
@@ -83,109 +78,94 @@
 
                 <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
                     <div class="card-body p-4">
-
                         <div class="row">
-                            <div class="col-md-6 col-lg-4 col-xl-3 mb-4 mb-md-0">
-                                <form>
-                                    <div class="d-flex flex-row pb-3">
-                                        <div class="d-flex align-items-center pe-2">
-                                            <input class="form-check-input" type="radio" name="radioNoLabel"
-                                                   id="radioNoLabel1v"
-                                                   value="" aria-label="..." checked/>
-                                        </div>
-                                        <div class="rounded border w-100 p-3">
-                                            <p class="d-flex align-items-center mb-0">
-                                                <i class="fab fa-cc-mastercard fa-2x text-dark pe-2"></i>Credit
-                                                Card
-                                            </p>
+                            <form id="checkoutForm" action="/orderSave.do" method="post">
+                                <div class="d-flex flex-column flex-xl-row">
+                                    <div class="col-md col-lg-4 col-xl-6 mb-4 mb-xl-0">
+                                        <div class="row">
+                                            <div class="col-6 col-xl-6">
+                                                <div data-mdb-input-init class="form-outline mb-4 mb-xl-5">
+                                                    <input type="text" id="addressee" name="addressee" class="form-control form-control-lg" placeholder="홍길동"/>
+                                                    <label class="form-label" for="addressee">받는 사람</label>
+                                                    <c:if test="${not empty validate}">
+                                                        <c:forEach var="error" items="${validate}">
+                                                            <c:if test="${error.propertyPath == 'addressee'}">
+                                                                <span style="color: red;">${error.message}</span>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </div>
+
+                                                <div data-mdb-input-init class="form-outline mb-4 mb-xl-5">
+                                                    <input type="text" id="address" name="address" class="form-control form-control-lg" placeholder="xx도 xx시" id="exp" minlength="2"/>
+                                                    <label class="form-label" for="address">배송지</label>
+                                                    <c:if test="${not empty validate}">
+                                                        <c:forEach var="error" items="${validate}">
+                                                            <c:if test="${error.propertyPath == 'address'}">
+                                                                <span style="color: red;">${error.message}</span>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-xl-6">
+                                                <div data-mdb-input-init class="form-outline mb-4 mb-xl-5">
+                                                    <input type="text" id="phone" name="phone" class="form-control form-control-lg" placeholder="010-xxxx-xxxx" minlength="3" maxlength="20"/>
+                                                    <label class="form-label" for="phone">받는 분 전화번호</label>
+                                                    <c:if test="${not empty validate}">
+                                                        <c:forEach var="error" items="${validate}">
+                                                            <c:if test="${error.propertyPath == 'phone'}">
+                                                                <span style="color: red;">${error.message}</span>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </div>
+
+                                                <div data-mdb-input-init class="form-outline mb-4 mb-xl-5">
+                                                    <input type="text" id="comment" name="comment" class="form-control form-control-lg" />
+                                                    <label class="form-label" for="comment">요청 사항</label>
+                                                    <c:if test="${not empty validate}">
+                                                        <c:forEach var="error" items="${validate}">
+                                                            <c:if test="${error.propertyPath == 'comment'}">
+                                                                <span style="color: red;">${error.message}</span>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex flex-row pb-3">
-                                        <div class="d-flex align-items-center pe-2">
-                                            <input class="form-check-input" type="radio" name="radioNoLabel"
-                                                   id="radioNoLabel2v"
-                                                   value="" aria-label="..."/>
-                                        </div>
-                                        <div class="rounded border w-100 p-3">
-                                            <p class="d-flex align-items-center mb-0">
-                                                <i class="fab fa-cc-visa fa-2x fa-lg text-dark pe-2"></i>Debit Card
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-row">
-                                        <div class="d-flex align-items-center pe-2">
-                                            <input class="form-check-input" type="radio" name="radioNoLabel"
-                                                   id="radioNoLabel3v"
-                                                   value="" aria-label="..."/>
-                                        </div>
-                                        <div class="rounded border w-100 p-3">
-                                            <p class="d-flex align-items-center mb-0">
-                                                <i class="fab fa-cc-paypal fa-2x fa-lg text-dark pe-2"></i>PayPal
-                                            </p>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-md-6 col-lg-4 col-xl-6">
-                                <div class="row">
-                                    <div class="col-12 col-xl-6">
-                                        <div data-mdb-input-init class="form-outline mb-4 mb-xl-5">
-                                            <input type="text" id="typeName" class="form-control form-control-lg"
-                                                   siez="17"
-                                                   placeholder="John Smith"/>
-                                            <label class="form-label" for="typeName">Name on card</label>
+
+                                    <div class="col-lg-4 col-xl-3"></div>
+
+                                    <div class="col-lg-4 col-xl-3  justify-content-end">
+                                        <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                                            <p class="mb-2">원가</p>
+                                            <p class="mb-2">$23.49 원</p>
                                         </div>
 
-                                        <div data-mdb-input-init class="form-outline mb-4 mb-xl-5">
-                                            <input type="text" id="typeExp" class="form-control form-control-lg"
-                                                   placeholder="MM/YY"
-                                                   size="7" id="exp" minlength="7" maxlength="7"/>
-                                            <label class="form-label" for="typeExp">Expiration</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-xl-6">
-                                        <div data-mdb-input-init class="form-outline mb-4 mb-xl-5">
-                                            <input type="text" id="typeText1" class="form-control form-control-lg"
-                                                   siez="17"
-                                                   placeholder="1111 2222 3333 4444" minlength="19" maxlength="19"/>
-                                            <label class="form-label" for="typeText">Card Number</label>
+                                        <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                                            <p class="mb-0">포인트 할인</p>
+                                            <p class="mb-0">-2.99 원</p>
                                         </div>
 
-                                        <div data-mdb-input-init class="form-outline mb-4 mb-xl-5">
-                                            <input type="number" id="typeText" class="form-control form-control-lg"
-                                                   maxlength="3"/>
-                                            <label class="form-label" for="typeText">사용할 포인트</label>
+                                        <hr class="my-4">
+
+                                        <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                                            <p class="mb-2">Total </p>
+                                            <p class="mb-2">26.48 원</p>
                                         </div>
+
+                                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                                            <div class="d-flex justify-content-between">
+                                                <span>결제하기: </span>
+                                                <span>$26.48</span>
+                                            </div>
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-4 col-xl-3">
-                                <div class="d-flex justify-content-between" style="font-weight: 500;">
-                                    <p class="mb-2">Subtotal</p>
-                                    <p class="mb-2">$23.49</p>
-                                </div>
 
-                                <div class="d-flex justify-content-between" style="font-weight: 500;">
-                                    <p class="mb-0">포인트 할인</p>
-                                    <p class="mb-0">-$2.99</p>
-                                </div>
-
-                                <hr class="my-4">
-
-                                <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
-                                    <p class="mb-2">Total (tax included)</p>
-                                    <p class="mb-2">$26.48</p>
-                                </div>
-
-                                <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                        class="btn btn-primary btn-block btn-lg" onclick="location='/orderView.do'">
-                                    <div class="d-flex justify-content-between">
-                                        <span>결제하기: </span>
-                                        <span>$26.48</span>
-                                    </div>
-                                </button>
-
-                            </div>
+                            </form>
                         </div>
 
                     </div>

@@ -1,2 +1,2 @@
-com.nhnacademy.shoppingmall.common.initialize.WebAppInitializer
-com.nhnacademy.shoppingmall.common.initialize.PointThreadInitializer
+com.nhnacademy.shoppingmall.global.common.initialize.WebAppInitializer
+com.nhnacademy.shoppingmall.global.common.initialize.PointThreadInitializer
