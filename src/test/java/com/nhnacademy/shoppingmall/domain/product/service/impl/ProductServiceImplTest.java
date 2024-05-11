@@ -69,7 +69,7 @@ class ProductServiceImplTest {
         // given
         Mockito.when(productRepository.findByProductAndCategoryLimit(anyInt(), anyInt(), anyInt())).thenReturn(Optional.of(new ArrayList<>()));
         // when
-        productService.findAllByCategoryLimitPage(Optional.ofNullable(Integer.valueOf(1)), 1);
+        productService.findAllByCategoryLimitPage(Optional.ofNullable(1), 1);
         // then
         Mockito.verify(productRepository, Mockito.times(1)).findByProductAndCategoryLimit(anyInt(), anyInt(), anyInt());
     }
@@ -80,9 +80,8 @@ class ProductServiceImplTest {
         // given
         // when
         // then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            productService.findAllByCategoryLimitPage(Optional.ofNullable(1), 0);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+                productService.findAllByCategoryLimitPage(Optional.of(1), 0));
     }
 
     @Test
@@ -91,9 +90,7 @@ class ProductServiceImplTest {
         // given
         // when
         // then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-                    productService.getProductView(null);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> productService.getProductView(null));
     }
 
     @Test
@@ -104,9 +101,7 @@ class ProductServiceImplTest {
         Mockito.when(imageRepository.findAllImageNameById(anyInt())).thenReturn(new ArrayList<>());
         // when
         // then
-        Assertions.assertThrows(RuntimeException.class, () -> {
-            productService.getProductView(anyInt());
-        });
+        Assertions.assertThrows(RuntimeException.class, () -> productService.getProductView(anyInt()));
     }
 
     @Test
