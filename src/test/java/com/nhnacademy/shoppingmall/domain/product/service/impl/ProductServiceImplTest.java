@@ -1,17 +1,13 @@
 package com.nhnacademy.shoppingmall.domain.product.service.impl;
 
 import com.nhnacademy.shoppingmall.domain.cart.repository.CartRepository;
-import com.nhnacademy.shoppingmall.domain.cart.repository.CartRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.category.repository.CategoryRepository;
 import com.nhnacademy.shoppingmall.domain.image.repository.ImageRepository;
-import com.nhnacademy.shoppingmall.domain.image.repository.ImageRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.product.dto.ProductAddFormDTO;
 import com.nhnacademy.shoppingmall.domain.product.dto.ProductDetailViewDTO;
 import com.nhnacademy.shoppingmall.domain.product.entity.Product;
 import com.nhnacademy.shoppingmall.domain.product.repository.ProductCategoryRepository;
-import com.nhnacademy.shoppingmall.domain.product.repository.ProductCategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.product.repository.ProductRepository;
-import com.nhnacademy.shoppingmall.domain.product.repository.impl.ProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -26,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.nhnacademy.shoppingmall.global.common.util.ApplicationConfigConst.MAX_PAGE_SIZE;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 

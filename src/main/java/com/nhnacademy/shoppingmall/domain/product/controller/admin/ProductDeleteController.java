@@ -1,15 +1,21 @@
 package com.nhnacademy.shoppingmall.domain.product.controller.admin;
 
+import com.nhnacademy.shoppingmall.domain.product.dto.ProductDetailViewDTO;
+import com.nhnacademy.shoppingmall.domain.product.entity.Product;
 import com.nhnacademy.shoppingmall.domain.product.repository.impl.ProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.product.service.ProductService;
 import com.nhnacademy.shoppingmall.domain.product.service.impl.ProductServiceImpl;
 import com.nhnacademy.shoppingmall.global.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.global.common.mvc.controller.BaseController;
+import com.nhnacademy.shoppingmall.global.common.util.CookieUtils;
 import com.nhnacademy.shoppingmall.global.common.util.FormValidator;
 import com.nhnacademy.shoppingmall.domain.product.repository.ProductCategoryRepositoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Queue;
+
+import static com.nhnacademy.shoppingmall.global.ApplicationConfigConst.MAX_RECENT_VIEW_PRODUCT_SIZE;
 
 @RequestMapping(method = RequestMapping.Method.GET, value = "/admin/productDelete.do")
 public class ProductDeleteController  implements BaseController {
@@ -24,9 +30,20 @@ public class ProductDeleteController  implements BaseController {
 
         productService.deleteProduct(productId);
 
-        //TODO: 쿠키에서 해당 상품이 존재할 시 내용 삭제
-
+        cookieDeleteRecentProduct(req, resp, productId);
 
         return "redirect:/admin/productList.do";
+    }
+
+    private static void cookieDeleteRecentProduct(HttpServletRequest req, HttpServletResponse resp, Integer productId) {
+        Queue<Product> recentProducts = CookieUtils.getProductQueueFromCookie(req);
+
+        for (Product recentProduct : recentProducts) {
+            if(recentProduct.getId() ==  productId) {
+                recentProducts.remove(recentProduct);
+            }
+        }
+
+        CookieUtils.AddObjectCookie(recentProducts, resp);
     }
 }
