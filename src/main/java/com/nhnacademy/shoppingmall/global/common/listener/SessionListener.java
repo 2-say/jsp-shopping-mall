@@ -11,7 +11,6 @@ import com.nhnacademy.shoppingmall.domain.cart.repository.UserCartRepositoryImpl
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import java.util.Optional;
 
 @WebListener
 public class SessionListener implements HttpSessionListener {

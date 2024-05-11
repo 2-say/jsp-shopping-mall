@@ -18,9 +18,9 @@ import java.util.Optional;
 
 @Slf4j
 public class CartServiceImpl implements CartService {
-    private CartRepository cartRepository;
-    private UserCartRepository userCartRepository;
-    private ProductRepository productRepository;
+    private final CartRepository cartRepository;
+    private final UserCartRepository userCartRepository;
+    private final ProductRepository productRepository;
 
     public CartServiceImpl(CartRepository cartRepository, UserCartRepository userCartRepository, ProductRepository productRepository) {
         this.cartRepository = cartRepository;
@@ -37,6 +37,7 @@ public class CartServiceImpl implements CartService {
         for (Cart c : cart) {
             cartId = c.getCartId();
             Optional<Product> product = productRepository.findById(c.getProductId());
+            if(product.isEmpty()) throw new RuntimeException("Not found Product");
             products.add(new CartViewDTO.ProductQuantity(product.get(), c.getCartProductQuantity()));
         }
 
@@ -50,16 +51,14 @@ public class CartServiceImpl implements CartService {
         if (userId.isEmpty() && nonMemberCartId.isEmpty()) return new ArrayList<>();
 
         //회원이 있을 경우
-        if (!userId.isEmpty()) {
+        if (userId.isPresent()) {
             if (userCartRepository.isExistsCartByUserId(userId.get())) {
                 return new ArrayList<>();
             }
             Integer cartId = userCartRepository.findCartIdByUserId(userId.get());
             cartList = cartRepository.findById(cartId);
         } else {
-            if (nonMemberCartId.isEmpty()) {
-                return new ArrayList<>();
-            }
+            //비회원 장바구니가 존재할 경우
             cartList = cartRepository.findById(nonMemberCartId.get());
         }
         return cartList;

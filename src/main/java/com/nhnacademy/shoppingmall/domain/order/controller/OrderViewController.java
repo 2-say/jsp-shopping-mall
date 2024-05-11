@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RequestMapping(method = RequestMapping.Method.GET, value = "/order/view.do")
 public class OrderViewController implements BaseController {
-    private OrderService orderService = new OrderServiceImpl();
+    private final OrderService orderService = new OrderServiceImpl();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {

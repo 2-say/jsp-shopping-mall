@@ -65,24 +65,4 @@ public class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public boolean isExist(int productId, int categoryId) {
-        String sql = "SELECT EXISTS (SELECT 1 FROM product_category WHERE product_id = ? AND category_id = ?) AS cnt";
-        Connection connection = DbConnectionThreadLocal.getConnection();
-
-        try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setInt(1, productId);
-            pstm.setInt(2, categoryId);
-
-            ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("cnt") >= 1;
-            }
-            return false;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

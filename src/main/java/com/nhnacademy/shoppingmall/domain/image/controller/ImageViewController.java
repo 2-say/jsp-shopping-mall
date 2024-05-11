@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = "/loadImage.do")
 public class ImageViewController implements BaseController {
-    private ImageService service = new ImageServiceImpl(new ImageRepositoryImpl());
+    private final ImageService service = new ImageServiceImpl(new ImageRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {

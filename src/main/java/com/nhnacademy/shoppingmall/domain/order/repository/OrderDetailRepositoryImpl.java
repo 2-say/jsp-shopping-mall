@@ -70,36 +70,6 @@ public class OrderDetailRepositoryImpl implements OrderDetailRepository {
     }
 
     @Override
-    public List<OrderDetail> findAll() {
-        String sql = "SELECT * FROM order_detail";
-        Connection connection = DbConnectionThreadLocal.getConnection();
-        List<OrderDetail> orderDetails = new ArrayList<>();
-
-        try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            ResultSet rs = pstm.executeQuery();
-
-            while (rs.next()) {
-                OrderDetail orderDetail = new OrderDetail(
-                        rs.getInt("order_detail_id")
-                        ,rs.getInt("order_detail_quantity")
-                        ,rs.getInt("order_detail_price")
-                        ,rs.getString("address")
-                        ,rs.getString("addressee")
-                        ,rs.getString("phone")
-                        ,rs.getString("order_comment")
-                        ,rs.getTimestamp("order_rdate").toLocalDateTime());
-                orderDetails.add(orderDetail);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return orderDetails;
-    }
-
-    @Override
     public void update(OrderDetail orderDetail) {
         String sql = "UPDATE order_detail SET order_detail_quantity = ?, order_detail_price = ?, " +
                 "address = ?, addressee = ?, phone = ?, order_comment = ?, order_rdate = ? WHERE order_detail_id = ?";

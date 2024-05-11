@@ -17,7 +17,7 @@ public class RequestChannel {
 
     public synchronized ChannelRequest getRequest() throws InterruptedException {
         //todo14-3 queue가 비어있다면 대기합니다.
-        if(queue.size() == 0) {
+        if(queue.isEmpty()) {
             wait();
         }
         //todo14-4 queue에서 request 반환합니다.

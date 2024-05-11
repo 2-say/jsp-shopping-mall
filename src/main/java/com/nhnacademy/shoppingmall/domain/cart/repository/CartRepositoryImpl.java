@@ -36,7 +36,6 @@ public class CartRepositoryImpl implements CartRepository {
     public void save(Cart cart) {
         String sql = "INSERT INTO cart (cart_id, cart_product_quantity, product_id, cart_rdate) VALUES (? ,?, ?, ?)";
         Connection connection = DbConnectionThreadLocal.getConnection();
-        int generatedKey = -1; // 기본적으로 에러를 나타내는 값
 
         try {
             PreparedStatement pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

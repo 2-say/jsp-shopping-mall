@@ -8,6 +8,4 @@ public interface ProductCategoryRepository {
     void update(int productId, int newCategoryId);
 
     void delete(int productId);
-
-    boolean isExist(int productId, int categoryId);
 }
