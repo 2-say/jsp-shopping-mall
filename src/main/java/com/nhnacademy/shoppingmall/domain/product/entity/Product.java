@@ -25,6 +25,7 @@ public class Product {
     @NotNull
     @Range(min = 0, max = 1_000_000_000, message = "금액은 -가 될 수 없습니다 , 10억 이하 입력")
     private int price;
+    @Size(max=255, message = "상품 설명이 너무 깁니다!")
     private String description;
     @Range(min = 1, max = 9999, message = "상품 개수는 1~9999개 입력 가능합니다")
     private int productField; //상품 재고
