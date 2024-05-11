@@ -4,6 +4,7 @@ import com.nhnacademy.shoppingmall.domain.category.domain.Categories;
 import com.nhnacademy.shoppingmall.domain.category.repository.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.point.exception.PointChargeException;
 import com.nhnacademy.shoppingmall.global.common.mvc.exception.ControllerNotFoundException;
+import com.nhnacademy.shoppingmall.global.common.mvc.exception.PageNotFoundException;
 import com.nhnacademy.shoppingmall.global.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.global.common.mvc.view.ViewResolver;
 import com.nhnacademy.shoppingmall.global.common.mvc.controller.BaseController;
@@ -17,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -61,6 +63,15 @@ public class FrontServlet extends HttpServlet {
 
                     req.setAttribute(ViewResolver.LAYOUT_CONTENT_HOLDER, viewResolver.getPath(viewName));
                     RequestDispatcher rd = req.getRequestDispatcher(layout);
+
+                    String filePath = getServletContext().getRealPath("/WEB-INF/views/layout/shop.jsp");
+                    log.info("filePath = {}", filePath);
+                    File file = new File(filePath);
+
+                    if (!file.exists()) {
+                        throw new PageNotFoundException("Not found Page ");
+                    }
+
                     rd.include(req, resp);
                 }
             }
@@ -78,12 +89,14 @@ public class FrontServlet extends HttpServlet {
             RequestDispatcher rd = null;
 
             //todo7-5 예외가 발생하면 해당 예외에 대해서 적절한 처리를 합니다.
-            if(e instanceof ControllerNotFoundException) {
+            if (e instanceof PageNotFoundException) {
+                rd = req.getRequestDispatcher("/WEB-INF/views/error/500.jsp");
+            } else if (e instanceof ControllerNotFoundException) {
                 rd = req.getRequestDispatcher("/WEB-INF/views/error/404.jsp");
-            } else if(e instanceof PointChargeException) {
+            } else if (e instanceof PointChargeException) {
                 req.setAttribute("message", "포인트 충전에 오류가 발생했습니다. 관리자에게 문의해주세요");
                 rd = req.getRequestDispatcher("/WEB-INF/views/error/error.jsp");
-            }else {
+            } else {
                 rd = req.getRequestDispatcher("/WEB-INF/views/error/500.jsp");
             }
             rd.forward(req, resp);
