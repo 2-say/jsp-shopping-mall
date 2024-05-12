@@ -14,7 +14,6 @@ public class OrderViewController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession(false);
-        String userId = (String) session.getAttribute(SessionConst.LOGIN_USER_ID);
 
         //orderSave 에서 넘어온 주문 내역만 출력
         OrderCompleteViewDTO recentCompleteOrder = (OrderCompleteViewDTO) session.getAttribute(SessionConst.RECENT_COMPLETE_ORDER);

@@ -42,11 +42,12 @@ public class OrderServiceImpl implements OrderService {
     /**
      * order 테이블
      * 1번 1번상품 -  1번 상품상세 상품 주문상세 1:1
-     *
-     * @return
      */
     @Override
     public OrderCompleteViewDTO saveOrder(Optional<String> userId, OrderForm orderForm, RequestChannel requestChannel) {
+        if(userId.isEmpty()) {
+            throw new IllegalArgumentException("로그인 ID가 존재하지 않습니다.");
+        }
 
         CartViewDTO cartView = cartService.getCartView(userId, Optional.empty());
         List<CartViewDTO.ProductQuantity> products = cartView.getProducts();
@@ -97,7 +98,6 @@ public class OrderServiceImpl implements OrderService {
 
         //현재 주문 내역 응답을 위해 저장
         return new OrderCompleteViewDTO(orderDetail,products, totalPay);
-
     }
 
     @Override
