@@ -102,6 +102,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderCompleteViewDTO getOrder(Optional<String> userId) {
+        if(userId.isEmpty()) {
+            throw new IllegalArgumentException("로그인 ID가 존재하지 않습니다.");
+        }
+
         OrderDetail orderDetail = null;
 
         List<CartViewDTO.ProductQuantity> products = new ArrayList<>();
