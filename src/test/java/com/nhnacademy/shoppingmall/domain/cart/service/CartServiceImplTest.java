@@ -80,7 +80,7 @@ class CartServiceImplTest {
         CartViewDTO cartView = cartService.getCartView(Optional.empty(), Optional.empty());
         // then
         Assertions.assertTrue(cartView.getProducts().isEmpty());
-        Assertions.assertTrue(cartView.getCartId() == null);
+        Assertions.assertNull(cartView.getCartId());
     }
 
     @Test
@@ -165,8 +165,8 @@ class CartServiceImplTest {
         Integer quantity = 1;
 
         // When, Then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            cartService.updateCartProductQuantity(cartId, productId, quantity);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+            cartService.updateCartProductQuantity(cartId, productId, quantity)
+        );
     }
 }
