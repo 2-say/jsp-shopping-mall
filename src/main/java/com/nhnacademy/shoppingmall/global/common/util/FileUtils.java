@@ -45,10 +45,12 @@ public final class FileUtils {
                     log.info("name = {} value = {}", name, value);
                     param.put(name, value);
                 } else { // Process uploaded files
-                    String fileName = item.getName();
                     String type = item.getContentType();
 
-                    File file = new File(ApplicationConfigConst.FILE_PATH, fileName);
+                    String fileName = item.getName();
+                    String notDuplicateFileName = avoidDuplicateFileName(fileName);
+
+                    File file = new File(ApplicationConfigConst.FILE_PATH, notDuplicateFileName);
 
                     if(fileName.isBlank()) {
                         log.error("FILE이 존재하지 않습니다.");
@@ -123,5 +125,20 @@ public final class FileUtils {
         }
 
         return false; // 파일이 존재하지 않습니다.
+    }
+
+    private static String avoidDuplicateFileName(String fileName) {
+        File file = new File(ApplicationConfigConst.FILE_PATH, fileName);
+        int count = 1;
+        String name = fileName.substring(0, fileName.lastIndexOf("."));
+        String extension = fileName.substring(fileName.lastIndexOf("."));
+
+        // 파일 이름이 이미 존재하는지 확인하고 중복을 피하기 위해 파일 이름을 수정
+        while (file.exists()) {
+            fileName = name + "_" + count + extension;
+            file = new File(ApplicationConfigConst.FILE_PATH, fileName);
+            count++;
+        }
+        return fileName;
     }
 }
