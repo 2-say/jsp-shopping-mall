@@ -1,117 +1,70 @@
-use nhn_academy_31;
-
-DROP TABLE IF EXISTS `auth`;
-DROP TABLE IF EXISTS `category`;
-DROP TABLE IF EXISTS `address`;
-DROP TABLE IF EXISTS `product`;
-DROP TABLE IF EXISTS `order`;
-DROP TABLE IF EXISTS `order_detail`;
-DROP TABLE IF EXISTS `cart`;
-DROP TABLE IF EXISTS `users`;
-
--- 키테고리
-CREATE TABLE `category`
+create table category
 (
-    `category_id`        int          NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리아아디',
-    `category_name`      varchar(128) NOT NULL COMMENT '카테고리이름',
-    `parent_category_id` int NULL COMMENT '자식카테고리아이디',
-    FOREIGN KEY (`parent_category_id`) REFERENCES `category` (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='카테고리';
+    category_id        int auto_increment comment '카테고리아아디'
+        primary key,
+    category_name      varchar(128) not null comment '카테고리이름',
+    parent_category_id int          null comment '자식카테고리아이디',
+    constraint category_ibfk_1
+        foreign key (parent_category_id) references category (category_id)
+)
+    comment '카테고리';
 
--- 상품
-CREATE TABLE `product`
+create index parent_category_id
+    on category (parent_category_id);
+
+create table order_detail
 (
-    `product_id`          int          NOT NULL AUTO_INCREMENT COMMENT '상품아이디',
-    `product_name`        varchar(128) NOT NULL COMMENT '상품이름',
-    `product_price`       bigint       NOT NULL DEFAULT 999999999 COMMENT '상품가격',
-    `product_description` varchar(256) COMMENT '상품설명',
-    `product_field`       int                   DEFAULT 0 COMMENT '상품재고',
-    `product_rdate`       datetime              DEFAULT NOW() COMMENT '상품등록일',
-    PRIMARY KEY (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='상품';
+    order_detail_id       int auto_increment comment '주문상세아이디'
+        primary key,
+    order_detail_quantity int          not null comment '주문상세수량',
+    order_detail_price    varchar(128) not null comment '주문상세가격',
+    address               varchar(256) not null comment '배달지',
+    addressee             varchar(128) not null comment '수취인',
+    phone                 varchar(64)  not null comment '받는분 전화번호',
+    order_comment         varchar(512) null comment '주문 요청사항',
+    order_rdate           datetime     null comment '주문 등록 일자'
+)
+    comment '주문상세';
 
-
--- 상품 카테고리
-CREATE TABLE `product_category`
+create table product
 (
-    `product_id`  int NOT NULL,
-    `category_id` int NOT NULL,
-    FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
-    FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='상품카테고리';
+    product_id          int auto_increment comment '상품아이디'
+        primary key,
+    product_name        varchar(128)                       not null comment '상품이름',
+    product_price       bigint   default 999999999         not null comment '상품가격',
+    product_description varchar(256)                       null comment '상품설명',
+    product_field       int      default 0                 null comment '상품재고',
+    product_rdate       datetime default CURRENT_TIMESTAMP null comment '상품등록일'
+)
+    comment '상품';
 
--- 유저
-CREATE TABLE `users`
+create table cart
 (
-    `user_id`         varchar(50)  NOT NULL COMMENT '아이디',
-    `user_name`       varchar(50)  NOT NULL COMMENT '이름',
-    `user_password`   varchar(200) NOT NULL COMMENT 'mysql password 사용',
-    `user_birth`      varchar(8)   NOT NULL COMMENT '생년월일 : 19840503',
-    `user_auth`       varchar(10)  NOT NULL COMMENT '권한: ROLE_ADMIN,ROLE_USER',
-    `user_point`      int          NOT NULL COMMENT 'default : 1000000',
-    `created_at`      datetime     NOT NULL COMMENT '가입 일자',
-    `latest_login_at` datetime DEFAULT NULL COMMENT '마지막 로그인 일자',
-    PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='회원';
+    cart_id               int auto_increment,
+    product_id            int      not null,
+    cart_product_quantity int      not null comment '장바구니상품수량',
+    cart_rdate            datetime null comment '장바구니등록날짜',
+    primary key (cart_id, product_id),
+    constraint cart_product_product_id_fk
+        foreign key (product_id) references product (product_id)
+)
+    comment '장바구니';
 
-
--- 포인트 사용 내역
-CREATE TABLE `point_use`
+create table product_category
 (
-    `user_id` varchar(50) NOT NULL,
-        FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='포인트 사용내역';
+    product_id  int not null,
+    category_id int not null,
+    primary key (product_id, category_id),
+    constraint product_category_ibfk_1
+        foreign key (product_id) references product (product_id),
+    constraint product_category_ibfk_2
+        foreign key (category_id) references category (category_id)
+)
+    comment '상품카테고리';
 
+create index category_id
+    on product_category (category_id);
 
--- 주문상세
-CREATE TABLE `order_detail`
-(
-    `order_detail_id`       int          NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '주문상세아이디',
-    `order_detail_quantity` int          NOT NULL COMMENT '주문상세수량',
-    `order_detail_price`    varchar(128) NOT NULL COMMENT '주문상세가격',
-    `address`               varchar(256) not null comment '배달지',
-    `addressee`             varchar(128) not null comment '수취인',
-    `phone`                 varchar(64)  not null comment '받는분 전화번호',
-    order_comment           varchar(512) null comment '주문 요청사항',
-    order_rdate             datetime null comment '주문 등록 일자'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='주문상세';
-
--- 주문
-CREATE TABLE `order`
-(
-    `product_id`      int         NOT NULL,
-    `user_id`         varchar(50) NOT NULL COMMENT '회원아이디',
-    `order_detail_id` int         NOT NULL,
-    FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
-    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-    FOREIGN KEY (`order_detail_id`) REFERENCES `order_detail` (`order_detail_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='주문';
-
-
--- 상품 장바구니 (비회원 가능)
-CREATE TABLE `product_cart`
-(
-    `cart_id`       int NOT NULL ,
-    `product_id`      int NOT NULL,
-    `user_id`         varchar(50) NULL,
-    FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
-    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-    FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`),
-    PRIMARY KEY (`product_id`, `cart_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='상품장바구니';
-
--- 장바구니
-CREATE TABLE `cart`
-(
-    `cart_id`               int NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '장바구니아이디',
-    `product_cart_id`       int NOT NULL COMMENT '상품아이디',
-    `cart_product_quantity` int NOT NULL COMMENT '장바구니상품수량',
-    `cart_rdate`            datetime COMMENT '장바구니등록날짜',
-    FOREIGN KEY (`product_cart_id`) REFERENCES `product_cart` (`product_cart_id`)
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='장바구니';
-
--- 상품 이미지
 create table product_image
 (
     image_id   int auto_increment comment 'pk'
@@ -122,3 +75,67 @@ create table product_image
         foreign key (product_id) references product (product_id)
 )
     comment '상품 상세 이미지';
+
+create table users
+(
+    user_id         varchar(50)  not null comment '아이디'
+        primary key,
+    user_name       varchar(50)  not null comment '이름',
+    user_password   varchar(200) not null comment 'mysql password 사용',
+    user_birth      varchar(8)   not null comment '생년월일 : 19840503',
+    user_auth       varchar(10)  not null comment '권한: ROLE_ADMIN,ROLE_USER',
+    user_point      int          not null comment 'default : 1000000',
+    created_at      datetime     not null comment '가입 일자',
+    latest_login_at datetime     null comment '마지막 로그인 일자'
+)
+    comment '회원';
+
+create table `order`
+(
+    product_id      int         not null,
+    user_id         varchar(50) not null comment '회원아이디',
+    order_detail_id int         not null,
+    constraint order_ibfk_1
+        foreign key (product_id) references product (product_id),
+    constraint order_ibfk_2
+        foreign key (user_id) references users (user_id),
+    constraint order_ibfk_3
+        foreign key (order_detail_id) references order_detail (order_detail_id)
+)
+    comment '주문';
+
+create index order_detail_id
+    on `order` (order_detail_id);
+
+create index product_id
+    on `order` (product_id);
+
+create index user_id
+    on `order` (user_id);
+
+create table point_use
+(
+    user_id varchar(50) not null,
+    constraint point_use_ibfk_1
+        foreign key (user_id) references users (user_id)
+)
+    comment '포인트 사용내역';
+
+create index user_id
+    on point_use (user_id);
+
+create table users_cart
+(
+    cart_id int         not null
+        primary key,
+    user_id varchar(50) null,
+    constraint users_cart_cart_cart_id_fk
+        foreign key (cart_id) references cart (cart_id),
+    constraint users_cart_ibfk_2
+        foreign key (user_id) references users (user_id)
+)
+    comment '상품장바구니';
+
+create index user_id
+    on users_cart (user_id);
+

@@ -7,8 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-
-
 <div class="container mt-5">
     <div class="alert alert-success" role="alert">
         <h4 class="alert-heading">주문 및 결제가 성공적으로 완료되었습니다!</h4>

@@ -35,6 +35,7 @@
 
                     <c:if test="${not empty userID}">
                         <li><a href="/mypage.do" class="nav-link px-2 text  -white">마이페이지</a></li>
+                        <li><a href="/order/history.do" class="nav-link px-2 text  -white">주문 내역</a></li>
                     </c:if>
                     <c:if test="${userAUTH eq 'ROLE_ADMIN'}">
                         <div class="d-md-flex">
