@@ -94,13 +94,13 @@ public class CartServiceImpl implements CartService {
 
     private void saveUserCart(Integer productId, Integer selectQuantity, String userId) {
         //처음 장바구니 만들었을 경우
-        if (userCartRepository.isExistsCartByUserId(userId)) {
+        if (!userCartRepository.isExistsCartByUserId(userId)) {
             int newCartId = cartRepository.saveNotHaveCartId(new Cart(null, productId, selectQuantity, LocalDateTime.now()));
             userCartRepository.save(new UserCart(newCartId, userId));
         } else {
             //존재하는 장바구니 찾고
             Integer cartId = userCartRepository.findCartIdByUserId(userId);
-            if (cartRepository.findDuplicate(cartId, productId)) {
+            if (cartId != null && cartRepository.findDuplicate(cartId, productId)) {
                 cartRepository.updateQuantity(cartId, productId, selectQuantity);
             } else {
                 cartRepository.save(new Cart(cartId, productId, selectQuantity, LocalDateTime.now()));
