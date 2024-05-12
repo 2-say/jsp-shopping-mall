@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface OrderService {
 
-    void saveOrder(Optional<String> userId, OrderForm orderForm, RequestChannel requestChannel);
+    OrderCompleteViewDTO saveOrder(Optional<String> userId, OrderForm orderForm, RequestChannel requestChannel);
 
     OrderCompleteViewDTO getOrder(Optional<String> userId);
 }

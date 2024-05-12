@@ -42,14 +42,17 @@ public class OrderServiceImpl implements OrderService {
     /**
      * order 테이블
      * 1번 1번상품 -  1번 상품상세 상품 주문상세 1:1
+     *
+     * @return
      */
     @Override
-    public void saveOrder(Optional<String> userId, OrderForm orderForm, RequestChannel requestChannel) {
+    public OrderCompleteViewDTO saveOrder(Optional<String> userId, OrderForm orderForm, RequestChannel requestChannel) {
 
         CartViewDTO cartView = cartService.getCartView(userId, Optional.empty());
         List<CartViewDTO.ProductQuantity> products = cartView.getProducts();
 
         int totalPay = 0;
+        OrderDetail orderDetail = null;
 
         //장바구니에 있는 각 상품 순회
         for (CartViewDTO.ProductQuantity product : products) {
@@ -59,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new IllegalArgumentException("재고가 부족합니다!");
             }
 
-            OrderDetail orderDetail = new OrderDetail(null, product.getSelectQuantity()
+            orderDetail = new OrderDetail(null, product.getSelectQuantity()
                     , product.getSelectQuantity() * product.getProduct().getPrice()
                     , orderForm.getAddress()
                     , orderForm.getAddressee()
@@ -70,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
             int insertOrderDetailId = orderDetailRepository.save(orderDetail);
             orderRepository.save(new Order(product.getProduct().getId(), userId.get(), insertOrderDetailId));
 
-            //재고 재거
+            //재고 차감
             log.info("상품 재고 감소 {} -> {} ", product.getProduct().getName(), product.getProduct().getProductField() - product.getSelectQuantity());
             productRepository.decreaseProductQuantity(product.getProduct().getId(), product.getSelectQuantity());
         }
@@ -91,6 +94,10 @@ public class OrderServiceImpl implements OrderService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        //현재 주문 내역 응답을 위해 저장
+        return new OrderCompleteViewDTO(orderDetail,products, totalPay);
+
     }
 
     @Override
@@ -110,4 +117,5 @@ public class OrderServiceImpl implements OrderService {
 
         return new OrderCompleteViewDTO(orderDetail, products, totalPrice);
     }
+
 }

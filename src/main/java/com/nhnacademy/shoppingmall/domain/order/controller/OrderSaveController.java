@@ -1,6 +1,7 @@
 package com.nhnacademy.shoppingmall.domain.order.controller;
 
 import com.nhnacademy.shoppingmall.domain.order.domain.OrderForm;
+import com.nhnacademy.shoppingmall.domain.order.dto.OrderCompleteViewDTO;
 import com.nhnacademy.shoppingmall.domain.order.service.OrderService;
 import com.nhnacademy.shoppingmall.domain.order.service.OrderServiceImpl;
 import com.nhnacademy.shoppingmall.global.common.mvc.annotation.RequestMapping;
@@ -51,11 +52,10 @@ public class OrderSaveController implements BaseController {
 
         RequestChannel requestChannel = (RequestChannel) req.getServletContext().getAttribute("requestChannel");
 
+        OrderCompleteViewDTO orderCompleteViewDTO = orderService.saveOrder(Optional.of(userId), orderForm, requestChannel);
+        session.setAttribute(SessionConst.RECENT_COMPLETE_ORDER, orderCompleteViewDTO);
 
-        //TODO: session에 주문 detail 번호 넣어서 최근껏만 넘어가도록 수정
-        orderService.saveOrder(Optional.of(userId), orderForm, requestChannel);
-
-        return "redirect:/order/orderView.do";
+        return "redirect:/order/view.do";
     }
 
     private void validLogPrint(Set<ConstraintViolation<OrderForm>> validate) {
