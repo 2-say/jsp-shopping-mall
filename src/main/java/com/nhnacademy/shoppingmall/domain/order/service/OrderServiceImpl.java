@@ -1,28 +1,21 @@
 package com.nhnacademy.shoppingmall.domain.order.service;
 
 import com.nhnacademy.shoppingmall.domain.cart.dto.CartViewDTO;
-import com.nhnacademy.shoppingmall.domain.cart.repository.CartRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.cart.repository.UserCartRepository;
-import com.nhnacademy.shoppingmall.domain.cart.repository.UserCartRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.cart.service.CartService;
-import com.nhnacademy.shoppingmall.domain.cart.service.CartServiceImpl;
 import com.nhnacademy.shoppingmall.domain.order.domain.Order;
 import com.nhnacademy.shoppingmall.domain.order.domain.OrderDetail;
 import com.nhnacademy.shoppingmall.domain.order.domain.OrderForm;
 import com.nhnacademy.shoppingmall.domain.order.dto.OrderCompleteViewDTO;
 import com.nhnacademy.shoppingmall.domain.order.repository.OrderDetailRepository;
-import com.nhnacademy.shoppingmall.domain.order.repository.OrderDetailRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.order.repository.OrderRepository;
-import com.nhnacademy.shoppingmall.domain.order.repository.OrderRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.product.entity.Product;
 import com.nhnacademy.shoppingmall.domain.product.repository.ProductRepository;
-import com.nhnacademy.shoppingmall.domain.product.repository.impl.ProductRepositoryImpl;
-import com.nhnacademy.shoppingmall.domain.user.repository.impl.UserRepositoryImpl;
 import com.nhnacademy.shoppingmall.domain.user.service.UserService;
-import com.nhnacademy.shoppingmall.domain.user.service.impl.UserServiceImpl;
 import com.nhnacademy.shoppingmall.global.thread.channel.RequestChannel;
 import com.nhnacademy.shoppingmall.global.thread.request.ChannelRequest;
 import com.nhnacademy.shoppingmall.global.thread.request.impl.PointChannelRequest;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -30,14 +23,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@Builder
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository = new OrderRepositoryImpl();
-    private final OrderDetailRepository orderDetailRepository = new OrderDetailRepositoryImpl();
-    private final CartService cartService = new CartServiceImpl(new CartRepositoryImpl(), new UserCartRepositoryImpl(), new ProductRepositoryImpl());
-    private final ProductRepository productRepository = new ProductRepositoryImpl();
-    private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
-    private final UserCartRepository userCartRepository = new UserCartRepositoryImpl();
-
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository ;
+    private final CartService cartService;
+    private final ProductRepository productRepository;
+    private final UserService userService;
+    private final UserCartRepository userCartRepository ;
 
     /**
      * order 테이블
@@ -85,6 +78,7 @@ public class OrderServiceImpl implements OrderService {
 
         //장바구니 삭제
         Integer cartId = userCartRepository.findCartIdByUserId(userId.get());
+        if(cartId == null) throw new RuntimeException("장바구니 ID가 존재하지 않습니다.");
         cartService.deleteCart(cartId);
 
         //결제완료 포인트 추가
@@ -114,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
         for (Order order : orders) {
             orderDetail = orderDetailRepository.findById(order.getOrderDetailId());
             Optional<Product> product = productRepository.findById(order.getProductId());
-
+            if(product.isEmpty()) throw new RuntimeException("상품 정보를 조회할 수 없습니다");
             products.add(new CartViewDTO.ProductQuantity(product.get(),orderDetail.getQuantity()) );
             totalPrice += orderDetail.getTotalPrice();
         }
