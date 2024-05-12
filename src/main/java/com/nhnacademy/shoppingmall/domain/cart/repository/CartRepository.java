@@ -8,11 +8,11 @@ public interface CartRepository {
     int saveNotHaveCartId(Cart cart);
     void save(Cart cart);
 
-    void delete(int cartId);
+    void delete(Integer cartId);
 
     List<Cart> findById(int cartId);
 
-    void updateQuantity(int cartId, int productId, int newQuantity);
+    void updateQuantity(Integer cartId, Integer productId, int newQuantity);
 
     boolean findDuplicate(int cartId, int productId);
 

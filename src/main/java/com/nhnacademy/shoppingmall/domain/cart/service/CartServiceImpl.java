@@ -45,14 +45,13 @@ public class CartServiceImpl implements CartService {
     }
 
 
-    @Override
-    public List<Cart> getCart(Optional<String> userId, Optional<Integer> nonMemberCartId) {
+    private List<Cart> getCart(Optional<String> userId, Optional<Integer> nonMemberCartId) {
         List<Cart> cartList = null;
         if (userId.isEmpty() && nonMemberCartId.isEmpty()) return new ArrayList<>();
 
         //회원이 있을 경우
         if (userId.isPresent()) {
-            if (userCartRepository.isExistsCartByUserId(userId.get())) {
+            if (!userCartRepository.isExistsCartByUserId(userId.get())) {
                 return new ArrayList<>();
             }
             Integer cartId = userCartRepository.findCartIdByUserId(userId.get());
@@ -110,15 +109,11 @@ public class CartServiceImpl implements CartService {
     }
 
     private void saveNonMemberCart(Integer productId, Integer selectQuantity, Integer nonMemberCartId) {
-        if (findDuplicate(productId, nonMemberCartId)) {
+        if (cartRepository.findDuplicate(nonMemberCartId, productId)) {
             cartRepository.updateQuantity(nonMemberCartId, productId, selectQuantity);
         } else {
             cartRepository.save(new Cart(nonMemberCartId, productId, selectQuantity, LocalDateTime.now()));
         }
-    }
-
-    private boolean findDuplicate(Integer productId, Integer cartId) {
-        return cartRepository.findDuplicate(cartId, productId);
     }
 
     @Override

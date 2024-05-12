@@ -10,8 +10,6 @@ import java.util.Optional;
 public interface CartService {
     CartViewDTO getCartView(Optional<String> userId, Optional<Integer> nonMemberCartId);
 
-    List<Cart> getCart(Optional<String> userId, Optional<Integer> nonMemberCartId);
-
     void saveCart(Integer productId, Integer selectQuantity, Optional<String> userId, Optional<Integer> nonMemberCartId, HttpSession session);
 
     void deleteCart(Integer cartId);

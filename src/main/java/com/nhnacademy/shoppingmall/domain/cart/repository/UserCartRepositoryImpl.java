@@ -48,7 +48,7 @@ public class UserCartRepositoryImpl implements UserCartRepository {
     }
 
     @Override
-    public void delete(int cartId) {
+    public void delete(Integer cartId) {
         String sql = "DELETE FROM users_cart WHERE cart_id = ?";
         Connection connection = DbConnectionThreadLocal.getConnection();
 
@@ -71,7 +71,7 @@ public class UserCartRepositoryImpl implements UserCartRepository {
             pstm.setString(1, userId);
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) <= 0; // 장바구니가 존재하면 true, 아니면 false 반환
+                return rs.getInt(1) > 0; // 장바구니가 존재하면 true, 아니면 false 반환
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -7,7 +7,7 @@ public interface UserCartRepository {
 
     UserCart findById(int cartId);
 
-    void delete(int cartId);
+    void delete(Integer cartId);
 
     boolean isExistsCartByUserId(String userId);
 

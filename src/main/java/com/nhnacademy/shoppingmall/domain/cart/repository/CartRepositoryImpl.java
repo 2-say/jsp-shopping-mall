@@ -50,7 +50,7 @@ public class CartRepositoryImpl implements CartRepository {
     }
 
     @Override
-    public void delete(int cartId) {
+    public void delete(Integer cartId) {
         String sql = "DELETE FROM cart WHERE cart_id = ?";
         Connection connection = DbConnectionThreadLocal.getConnection();
 
@@ -88,7 +88,7 @@ public class CartRepositoryImpl implements CartRepository {
     }
 
     @Override
-    public void updateQuantity(int cartId, int productId, int newQuantity) {
+    public void updateQuantity(Integer cartId, Integer productId, int newQuantity) {
         String sql = "UPDATE cart SET cart_product_quantity = ? WHERE cart_id = ? AND product_id = ?";
         Connection connection = DbConnectionThreadLocal.getConnection();
 
