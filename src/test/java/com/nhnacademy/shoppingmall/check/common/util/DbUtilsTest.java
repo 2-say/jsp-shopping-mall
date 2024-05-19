@@ -1,13 +1,13 @@
 package com.nhnacademy.shoppingmall.check.common.util;
 
-import com.nhnacademy.shoppingmall.common.util.DbUtils;
+import com.nhnacademy.shoppingmall.global.common.util.DbUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-//todo#2 - connection-pool test
+//todo2 - connection-pool test
 
 @Slf4j
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)

@@ -1,13 +1,13 @@
 package com.nhnacademy.shoppingmall.check.common.mvc.view;
 
-import com.nhnacademy.shoppingmall.common.mvc.view.ViewResolver;
+import com.nhnacademy.shoppingmall.global.common.mvc.view.ViewResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.function.Try;
 import org.junit.platform.commons.util.ReflectionUtils;
 
-//todo#6-5 테스트가 통과하도록 ViewResolver를 구현합니다.
+//todo6-5 테스트가 통과하도록 ViewResolver를 구현합니다.
 class ViewResolverTest {
     final ViewResolver viewResolver = new ViewResolver();
 

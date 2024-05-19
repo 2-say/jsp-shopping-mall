@@ -1,11 +1,11 @@
 package com.nhnacademy.shoppingmall.check.user.service.impl;
 
-import com.nhnacademy.shoppingmall.user.domain.User;
-import com.nhnacademy.shoppingmall.user.exception.UserAlreadyExistsException;
-import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
-import com.nhnacademy.shoppingmall.user.repository.UserRepository;
-import com.nhnacademy.shoppingmall.user.service.UserService;
-import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
+import com.nhnacademy.shoppingmall.domain.user.domain.User;
+import com.nhnacademy.shoppingmall.domain.user.exception.UserAlreadyExistsException;
+import com.nhnacademy.shoppingmall.domain.user.exception.UserNotFoundException;
+import com.nhnacademy.shoppingmall.domain.user.repository.UserRepository;
+import com.nhnacademy.shoppingmall.domain.user.service.UserService;
+import com.nhnacademy.shoppingmall.domain.user.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
-//todo#4-6 Test Code가 통과하도록 UserServiceImpl을 구현합니다.
+//todo4-6 Test Code가 통과하도록 UserServiceImpl을 구현합니다.
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
@@ -28,7 +28,7 @@ class UserServiceImplTest {
 
     UserRepository userRepository = Mockito.mock(UserRepository.class);
     UserService userService = new UserServiceImpl(userRepository);
-    User testUser = testUser=new User("nhnacademy-test-user","nhn아카데미","nhnacademy-test-password","19900505", User.Auth.ROLE_USER,100_0000, LocalDateTime.now(),LocalDateTime.now());
+    User testUser = new User("nhnacademy-test-user","nhn아카데미","nhnacademy-test-password","19900505", User.Auth.ROLE_USER,100_0000, LocalDateTime.now(),LocalDateTime.now());
 
     @Test
     @DisplayName("getUser")

@@ -1,4 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" session="false" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<script>
+    window.onload = function() {
+        var errorAttribute= "${error}";
+        if (errorAttribute && errorAttribute !== "null") {
+            alert(errorAttribute);
+        }
+    };
+</script>
 
 <div style="margin: auto; width: 400px;">
     <div class="p-2">
