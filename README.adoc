@@ -1,3 +1,4 @@
-= Web Application 개발
 
-* link:docs/03.문제/1.설명.adoc[docs/1 ~ 15]  순서대로 읽고 개발합니다.
+= servlet & jsp jdbc & mysql
+
+Spring boot이 어떻게 만들어지고 작동되는 지 servlet 토이 프로젝트 실습을 통해서 공부합니다. 
